@@ -10,9 +10,9 @@ function createThreshhold(repair, emergency, full) {
 
 var structureThreshhold = {};
 structureThreshhold[STRUCTURE_CONTAINER] = createThreshhold(240000, 10000, 250000);
-structureThreshhold[STRUCTURE_RAMPART]   = createThreshhold( 45000,  1000,  50000);
+structureThreshhold[STRUCTURE_RAMPART]   = createThreshhold( 45000,  1000, 100000);
 structureThreshhold[STRUCTURE_ROAD]      = createThreshhold(  4500,   500,   5000);
-structureThreshhold[STRUCTURE_WALL]      = createThreshhold( 45000,  1000,  50000);
+structureThreshhold[STRUCTURE_WALL]      = createThreshhold( 45000,  1000, 100000);
 
 module.exports = {
     run: function(creep) {
