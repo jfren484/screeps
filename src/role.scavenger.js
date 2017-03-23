@@ -3,8 +3,9 @@ let gameData = require('game.data');
 module.exports = {
     run: function (creep) {
         let target = creep.pos.findClosestByRange(FIND_DROPPED_RESOURCES);
+        let creepLoad = _.sum(creep.carry);
 
-        if (creep.memory.dispensing && creep.carry.energy === 0) {
+        if (creep.memory.dispensing && !creepLoad) {
             creep.memory.dispensing = false;
             if (target) {
                 creep.say('scavenge');
@@ -12,13 +13,13 @@ module.exports = {
                 creep.memory.isInPosition = false;
                 creep.say('resting');
             }
-        } else if (!creep.memory.dispensing && (!target && creep.carry.energy || creep.carry.energy === creep.carryCapacity)) {
+        } else if (!creep.memory.dispensing && (!target && creepLoad || creepLoad === creep.carryCapacity)) {
             creep.memory.dispensing = true;
             creep.say('dispense');
         }
 
         if (creep.memory.dispensing) {
-            let carryingNonEnergy = _.sum(creep.carry) > creep.carry.energy;
+            let carryingNonEnergy = creepLoad != creep.carry.energy;
 
             let destination = creep.pos.findClosestByRange(FIND_STRUCTURES, {
                 filter: function (s) {
