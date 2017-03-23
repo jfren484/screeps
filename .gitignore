@@ -1,5 +1,6 @@
 .git
 .vs
+.idea
 bin
 obj
 *.suo
