@@ -37,6 +37,7 @@ let rooms = {
     'W84S61': {
         archerPosts: [{x: 22, y: 19}, {x: 28, y: 8}],
         harvesterPosts: [{x: 30, y: 16}, {x: 13, y: 26}],
+        scavengerPosts: [{x: 16, y: 28}],
         upgraderPosts: [{x: 11, y: 27}, {x: 13, y: 27}, {x: 12, y: 27}, {x: 10, y: 27}],
         upgraderContainerPosition: {x: 12, y: 27}
     }

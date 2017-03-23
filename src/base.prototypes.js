@@ -1,4 +1,4 @@
-var gameData = require('game.data');
+let gameData = require('game.data');
 
 Creep.prototype.getTarget = function() {
     let target = null;
