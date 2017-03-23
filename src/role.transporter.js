@@ -1,8 +1,8 @@
-var gameData = require('game.data');
+let gameData = require('game.data');
 
 module.exports = {
     run: function(creep) {
-        var target = creep.getTarget();
+        let target = creep.getTarget();
         
         if (creep.memory.collecting) {
             if (creep.carry.energy === creep.carryCapacity) {
@@ -24,15 +24,15 @@ module.exports = {
 
         if (creep.memory.collecting) {
             if (!target) {
-                var containers = creep.room.find(FIND_STRUCTURES, {filter: function(s) {
+                let containers = creep.room.find(FIND_STRUCTURES, {filter: function(s) {
                     return s.structureType === STRUCTURE_CONTAINER && s.store.energy;
                 }});
                 
                 if (containers.length) {
                     containers = _.sortBy(containers, function(c) {
-                        var bucket300 = -Math.round(c.store.energy / 300) * 300;
+                        let bucket300 = -Math.round(c.store.energy / 300) * 300;
                         return bucket300 + creep.pos.getRangeTo(c);
-                    })
+                    });
                     
                     target = containers[0];
                     creep.memory.targetId = target.id;
@@ -50,7 +50,7 @@ module.exports = {
             }
         } else {
             if (!target) {
-                var receivers = creep.room.find(FIND_STRUCTURES, {filter: function(s) {
+                let receivers = creep.room.find(FIND_STRUCTURES, {filter: function(s) {
                     return s.id !== creep.memory.lastCollectedFromId
                         && (s.structureType === STRUCTURE_CONTAINER && s.availableCapacity() >= creep.carry.energy
                         || s.structureType === STRUCTURE_STORAGE && s.storeCapacity - _.sum(s.store) >= creep.carry.energy
@@ -60,7 +60,7 @@ module.exports = {
                 
                 if (receivers.length) {
                     receivers = _.sortBy(receivers, function(c) {
-                        var sort = 0;
+                        let sort = 0;
                         
                         if (c.structureType === STRUCTURE_SPAWN && c.energy < 200) {
                             sort = -1000;
@@ -73,7 +73,7 @@ module.exports = {
                         }
 
                         return sort + creep.pos.getRangeTo(c);
-                    })
+                    });
                     
                     target = receivers[0];
                     creep.memory.targetId = target.id;
@@ -81,7 +81,7 @@ module.exports = {
             }
             
             if (target) {
-                var result = creep.transfer(target, RESOURCE_ENERGY);
+                let result = creep.transfer(target, RESOURCE_ENERGY);
                 if (result === ERR_NOT_IN_RANGE) {
                     creep.moveTo(target, {visualizePathStyle: {stroke: '#ffaa00'}});
                 } else if (result === ERR_FULL) {

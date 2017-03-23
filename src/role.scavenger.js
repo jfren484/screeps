@@ -1,8 +1,8 @@
-var gameData = require('game.data');
+let gameData = require('game.data');
 
 module.exports = {
     run: function(creep) {
-        var target = creep.pos.findClosestByRange(FIND_DROPPED_RESOURCES);
+        let target = creep.pos.findClosestByRange(FIND_DROPPED_RESOURCES);
 
         if (creep.memory.dispensing && creep.carry.energy === 0) {
             creep.memory.dispensing = false;
@@ -17,7 +17,7 @@ module.exports = {
         }
         
         if (creep.memory.dispensing) {
-            var container = creep.pos.findClosestByRange(FIND_STRUCTURES, {filter: function(s) {
+            let container = creep.pos.findClosestByRange(FIND_STRUCTURES, {filter: function(s) {
                 return s.structureType === STRUCTURE_CONTAINER && s.availableCapacity() > 0;
             }}) || creep.pos.findClosestByRange(FIND_MY_SPAWNS);
 

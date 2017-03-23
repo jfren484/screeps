@@ -1,6 +1,6 @@
-var gameData = require('game.data');
+let gameData = require('game.data');
 
-function createThreshhold(repair, emergency, full) {
+function createThreshold(repair, emergency, full) {
     return {
         'repair':    repair,
         'emergency': emergency,
@@ -8,14 +8,16 @@ function createThreshhold(repair, emergency, full) {
     };
 }
 
-var structureThreshhold = {};
-structureThreshhold[STRUCTURE_CONTAINER] = createThreshhold(240000, 10000, 250000);
-structureThreshhold[STRUCTURE_RAMPART]   = createThreshhold( 45000,  1000, 100000);
-structureThreshhold[STRUCTURE_ROAD]      = createThreshhold(  4500,   500,   5000);
-structureThreshhold[STRUCTURE_WALL]      = createThreshhold( 45000,  1000, 100000);
+let structureThreshold = {};
+structureThreshold[STRUCTURE_CONTAINER] = createThreshold(240000, 10000, 250000);
+structureThreshold[STRUCTURE_RAMPART]   = createThreshold( 45000,  1000, 100000);
+structureThreshold[STRUCTURE_ROAD]      = createThreshold(  4500,   500,   5000);
+structureThreshold[STRUCTURE_WALL]      = createThreshold( 45000,  1000, 100000);
 
 module.exports = {
     run: function(creep) {
+        let target;
+
         if (creep.memory.refueling && creep.carry.energy === creep.carryCapacity) {
             creep.memory.refueling = false;
             creep.say('back to work');
@@ -25,7 +27,7 @@ module.exports = {
         }
 
         if (creep.memory.refueling) {
-            var containers = creep.room.find(FIND_STRUCTURES, {filter: function(s) {
+            let containers = creep.room.find(FIND_STRUCTURES, {filter: function(s) {
                 return s.structureType === STRUCTURE_CONTAINER && s.store[RESOURCE_ENERGY] > 0;
             }});
 
@@ -36,13 +38,13 @@ module.exports = {
                     creep.moveTo(containers[0], {visualizePathStyle: {stroke: '#ffaa00'}});
                 }
             } else {
-                var source = creep.pos.findClosestByRange(FIND_SOURCES_ACTIVE);
+                let source = creep.pos.findClosestByRange(FIND_SOURCES_ACTIVE);
                 if (creep.harvest(source) === ERR_NOT_IN_RANGE) {
                     creep.moveTo(source, {visualizePathStyle: {stroke: '#ffaa00'}});
                 }
             }
         } else {
-            var target = creap.getTarget();
+            let target = creep.getTarget();
     
             if (!target) {
                 // TODO: find something else to do
@@ -59,24 +61,24 @@ module.exports = {
                 }
             }
     
-            var isConstructionSite = !!target.progressTotal;
-            var action = isConstructionSite ?
+            let isConstructionSite = !!target.progressTotal;
+            let action = isConstructionSite ?
                 creep.build(target) :
                 creep.repair(target);
             
             if (action === ERR_NOT_IN_RANGE) {
                 creep.moveTo(target, {visualizePathStyle: {stroke: '#ffffff'}});
-            } else if (!isConstructionSite && target.hits >= structureThreshhold[target.structureType].full) {
+            } else if (!isConstructionSite && target.hits >= structureThreshold[target.structureType].full) {
                 creep.memory.targetId = null;
             }
         }
         
         // TODO: Get rid of old code below
 
-        var targets = creep.room.find(FIND_MY_CONSTRUCTION_SITES);
+        let targets = creep.room.find(FIND_MY_CONSTRUCTION_SITES);
 
         if (creep.memory.repairing) {
-            var toRepair = creep.room.find(FIND_STRUCTURES, {
+            let toRepair = creep.room.find(FIND_STRUCTURES, {
                 filter: function(struct) {
                     return (struct.structureType === STRUCTURE_WALL && struct.hits < 10000)
                         || (struct.structureType === STRUCTURE_RAMPART && struct.hits < 50000)
@@ -85,8 +87,8 @@ module.exports = {
                 }
             });
             if (toRepair.length) {
-                var ramparts = _.filter(toRepair, (s) => s.structureType === STRUCTURE_RAMPART);
-                var target = ramparts.length ? ramparts[0] : toRepair[0];
+                let ramparts = _.filter(toRepair, (s) => s.structureType === STRUCTURE_RAMPART);
+                target = ramparts.length ? ramparts[0] : toRepair[0];
                 if (creep.repair(target) === ERR_NOT_IN_RANGE) {
                     creep.moveTo(target, {visualizePathStyle: {stroke: '#ffffff'}});
                 }

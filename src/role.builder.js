@@ -1,8 +1,7 @@
-var gameData = require('game.data');
-
 module.exports = {
     run: function(creep) {
-        var targets = creep.room.find(FIND_MY_CONSTRUCTION_SITES);
+        let targets = creep.room.find(FIND_MY_CONSTRUCTION_SITES);
+        let target;
 
         if (!creep.memory.renewing && !creep.spawning && creep.ticksToLive < 200) { // When spawning, apparently ticksToLive is 0
             creep.memory.building = false;
@@ -28,7 +27,7 @@ module.exports = {
 
         if (creep.memory.building) {
             if (targets.length) {
-                var priorityTargets = _.filter(targets, (s) => s.structureType === STRUCTURE_EXTENSION);
+                let priorityTargets = _.filter(targets, (s) => s.structureType === STRUCTURE_EXTENSION);
                 if (!priorityTargets.length) {
                     priorityTargets = _.filter(targets, (s) => s.structureType === STRUCTURE_ROAD);
                 }
@@ -43,7 +42,7 @@ module.exports = {
                     priorityTargets = _.sortBy(priorityTargets, [function(t) { return creep.pos.getRangeTo(t); }]);
                 }
                 
-                var target = priorityTargets[0];
+                target = priorityTargets[0];
                 
                 if (creep.build(target) === ERR_NOT_IN_RANGE) {
                     creep.moveTo(target, {visualizePathStyle: {stroke: '#ffffff'}});
@@ -53,7 +52,7 @@ module.exports = {
                 creep.memory.repairing = true;
             }
         } else if (creep.memory.repairing) {
-            var toRepair = creep.room.find(FIND_STRUCTURES, {
+            let toRepair = creep.room.find(FIND_STRUCTURES, {
                 filter: function(struct) {
                     return (struct.structureType === STRUCTURE_WALL && struct.hits < 100000)
                         || (struct.structureType === STRUCTURE_RAMPART && struct.hits < 50000)
@@ -65,8 +64,8 @@ module.exports = {
                 }
             });
             if (toRepair.length) {
-                var ramparts = _.filter(toRepair, (s) => s.structureType === STRUCTURE_RAMPART);
-                var target = ramparts.length ? ramparts[0] : toRepair[0];
+                let ramparts = _.filter(toRepair, (s) => s.structureType === STRUCTURE_RAMPART);
+                target = ramparts.length ? ramparts[0] : toRepair[0];
                 if (creep.repair(target) === ERR_NOT_IN_RANGE) {
                     creep.moveTo(target, {visualizePathStyle: {stroke: '#ffffff'}});
                 }
@@ -80,7 +79,7 @@ module.exports = {
                 creep.transfer(Game.spawns['Spawn1'], RESOURCE_ENERGY);
             }
         } else {
-            var container = creep.pos.findClosestByRange(FIND_STRUCTURES, {filter: function(s) {
+            let container = creep.pos.findClosestByRange(FIND_STRUCTURES, {filter: function(s) {
                 return s.structureType === STRUCTURE_CONTAINER && s.store.energy;
             }});
 
@@ -89,7 +88,7 @@ module.exports = {
                     creep.moveTo(container, {visualizePathStyle: {stroke: '#ffaa00'}});
                 }
             } else {
-                var source = creep.pos.findClosestByRange(FIND_SOURCES_ACTIVE);
+                let source = creep.pos.findClosestByRange(FIND_SOURCES_ACTIVE);
                 if (creep.harvest(source) === ERR_NOT_IN_RANGE) {
                     creep.moveTo(source, {visualizePathStyle: {stroke: '#ffaa00'}});
                 }

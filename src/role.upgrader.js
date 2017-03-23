@@ -1,4 +1,4 @@
-var gameData = require('game.data');
+let gameData = require('game.data');
 
 module.exports = {
     run: function(creep) {
@@ -22,7 +22,7 @@ module.exports = {
             if (creep.memory.isInPosition) {
                 creep.upgradeController(creep.room.controller);
             } else {
-                creep.takeUnoccupiedPost(gameData.rooms[creep.room.name].upgraderPosts);
+                creep.takeUnoccupiedPost(gameData.myRooms[creep.room.name].upgraderPosts);
             }
         } else if (creep.memory.renewing) {
             creep.moveTo(Game.spawns['Spawn1']);
@@ -30,7 +30,7 @@ module.exports = {
                 creep.transfer(Game.spawns['Spawn1'], RESOURCE_ENERGY);
             }
         } else {
-            var containers = _.filter(creep.room.lookForAt(LOOK_STRUCTURES, gameData.rooms[creep.room.name].upgraderContainerPosition.x, gameData.rooms[creep.room.name].upgraderContainerPosition.y),
+            let containers = _.filter(creep.room.lookForAt(LOOK_STRUCTURES, gameData.myRooms[creep.room.name].upgraderContainerPosition.x, gameData.myRooms[creep.room.name].upgraderContainerPosition.y),
                 (s) => s.structureType === STRUCTURE_CONTAINER && s.store[RESOURCE_ENERGY] > 0);
             
             if (!containers.length) {
@@ -46,7 +46,7 @@ module.exports = {
                     creep.moveTo(containers[0], {visualizePathStyle: {stroke: '#ffaa00'}});
                 }
             } else {
-                var source = creep.pos.findClosestByRange(FIND_SOURCES_ACTIVE)
+                let source = creep.pos.findClosestByRange(FIND_SOURCES_ACTIVE);
                 if (creep.harvest(source) === ERR_NOT_IN_RANGE) {
                     creep.moveTo(source, {visualizePathStyle: {stroke: '#ffaa00'}});
                 }

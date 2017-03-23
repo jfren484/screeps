@@ -10,7 +10,7 @@ module.exports = {
             creep.say('bye!');
         }
         
-        var spawn = creep.getTarget();
+        let spawn = creep.getTarget();
 
         if (!spawn) {
             spawn = creep.pos.findClosestByRange(FIND_MY_SPAWNS);

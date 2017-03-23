@@ -1,4 +1,4 @@
-var gameData = require('game.data');
+let gameData = require('game.data');
 
 module.exports = {
     run: function(creep) {
@@ -12,9 +12,9 @@ module.exports = {
                 creep.say('harvest');
             }
         } else if (!creep.memory.isInPosition) {
-            creep.takeUnoccupiedPost(gameData.rooms[creep.room.name].harvesterPosts);
+            creep.takeUnoccupiedPost(gameData.myRooms[creep.room.name].harvesterPosts);
         } else {
-            var source = creep.pos.findClosestByRange(FIND_SOURCES);
+            let source = creep.pos.findClosestByRange(FIND_SOURCES);
             
             if (!source.energy && source.ticksToRegeneration > 45) {
                 creep.memory.isInPosition = false;
@@ -29,7 +29,7 @@ module.exports = {
                 }
 
                 if (creep.carry.energy) {
-                    var target = creep.pos.findClosestByRange(FIND_STRUCTURES, {filter: function(s) {
+                    let target = creep.pos.findClosestByRange(FIND_STRUCTURES, {filter: function(s) {
                         return s.structureType === STRUCTURE_CONTAINER && s.availableCapacity();
                     }});            
 
@@ -39,7 +39,7 @@ module.exports = {
                 }
     
                 if (creep.carry.energy < creep.carryCapacity) {
-                    var dropped = creep.pos.lookFor(LOOK_ENERGY);            
+                    let dropped = creep.pos.lookFor(LOOK_ENERGY);
                     if (dropped.length) {
                         creep.pickup(dropped[0]);
                     }

@@ -1,4 +1,4 @@
-var gameData = require('game.data');
+let gameData = require('game.data');
 
 module.exports = {
     run: function(creep) {
@@ -12,7 +12,7 @@ module.exports = {
                 creep.say('defend');
             }
         } else if (creep.memory.isInPosition) {
-            var nearbyHostileCreeps = creep.pos.findInRange(FIND_HOSTILE_CREEPS, 3);
+            let nearbyHostileCreeps = creep.pos.findInRange(FIND_HOSTILE_CREEPS, 3);
                                            
             if (nearbyHostileCreeps.length === 1) {
                 creep.rangedAttack(nearbyHostileCreeps[0]);
@@ -24,7 +24,7 @@ module.exports = {
                 creep.say('renew');
             }
         } else {
-            creep.takeUnoccupiedPost(gameData.rooms[creep.room.name].archerPosts);
+            creep.takeUnoccupiedPost(gameData.myRooms[creep.room.name].archerPosts);
         }
     }
 };
