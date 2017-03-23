@@ -60,17 +60,17 @@ Spawn.prototype.renewMyAdjacentCreeps = function() {
 };
 
 Spawn.prototype.spawnNewCreeps_old = function() {
-    var spawn = this;
+    var spawn = this, role, newName;
 
     if (spawn.spawning) {
-        var role = Game.creeps[spawn.spawning.name].memory.role;
+        role = Game.creeps[spawn.spawning.name].memory.role;
         spawn.room.visual.text('Spawning ' + role, spawn.pos.x + 1, spawn.pos.y, {align: 'left', opacity: 0.8});
     } else if (spawn.room.energyAvailable >= 550) {
         var harvesters = _.filter(Game.creeps, (creep) => creep.memory.role == 'harvester');
         var builders = _.filter(Game.creeps, (creep) => creep.memory.role == 'builder');
         var upgraders = _.filter(Game.creeps, (creep) => creep.memory.role == 'upgrader');
     
-        var role = harvesters.length < 3
+        role = harvesters.length < 3
             ? 'harvester'
             : upgraders.length < 1
                 ? 'upgrader'
@@ -81,7 +81,7 @@ Spawn.prototype.spawnNewCreeps_old = function() {
                         : null;
 
         if (role) {
-            var newName = spawn.createCreep([WORK,WORK,WORK,CARRY,CARRY,MOVE,MOVE,MOVE], undefined, {role: role, createdOn: new Date()});
+            newName = spawn.createCreep([WORK,WORK,WORK,CARRY,CARRY,MOVE,MOVE,MOVE], undefined, {role: role, createdOn: new Date()});
 
             console.log('Spawning new ' + role + ': ' + newName);
         } else {
