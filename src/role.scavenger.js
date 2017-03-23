@@ -30,7 +30,7 @@ module.exports = {
             });
 
             if (creep.pos.isNearTo(destination)) {
-                for (let resource in Object.keys(creep.carry)) {
+                for (let resource in creep.carry) {
                     creep.transfer(destination, resource);
                 }
             } else {
