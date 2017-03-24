@@ -56,7 +56,7 @@ module.exports = {
             let toRepair = creep.room.find(FIND_STRUCTURES, {
                 filter: function(struct) {
                     return (struct.structureType === STRUCTURE_WALL && struct.hits < 100000)
-                        || (struct.structureType === STRUCTURE_RAMPART && struct.hits < 50000)
+                        || (struct.structureType === STRUCTURE_RAMPART && struct.hits < 100000)
                         || (struct.structureType === STRUCTURE_ROAD && struct.hits < 4500)
                         || (struct.structureType === STRUCTURE_CONTAINER && struct.hits < 240000)
                         || (struct.structureType === STRUCTURE_TOWER && struct.hits < struct.hitsMax)
