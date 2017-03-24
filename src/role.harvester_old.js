@@ -1,3 +1,4 @@
+/// <reference path="../scripts/_references.js" />
 module.exports = {
     run: function(creep) {
         if (creep.memory.collecting && creep.carry.energy === creep.carryCapacity) {
@@ -12,13 +13,13 @@ module.exports = {
 
         if (creep.memory.collecting) {
             // var source = /*creep.room.find(FIND_SOURCES)[1];*/ creep.pos.findClosestByRange(FIND_SOURCES_ACTIVE);
-            let source = creep.id == '58cb62f78e5d48a81314151e' || creep.id == '58cb661a91b7951c047a1765'
+            let source = creep.id === '58cb62f78e5d48a81314151e' || creep.id === '58cb661a91b7951c047a1765'
                 ? creep.pos.findClosestByRange(FIND_SOURCES_ACTIVE)
                 : Game.getObjectById('5873bbec11e3e4361b4d6c59');
             if (creep.harvest(source) === ERR_NOT_IN_RANGE) {
                 creep.moveTo(source, {visualizePathStyle: {stroke: '#ffaa00'}});
             }
-        } else if (creep.id == '58cb62f78e5d48a81314151e' || creep.id == '58cb661a91b7951c047a1765' || target.availableCapacity() < creep.carry.energy) {
+        } else if (creep.id === '58cb62f78e5d48a81314151e' || creep.id === '58cb661a91b7951c047a1765' || target.availableCapacity() < creep.carry.energy) {
             let targets = creep.room.find(FIND_STRUCTURES, {
                 filter: (structure) => {
                     if ((structure.structureType === STRUCTURE_SPAWN
@@ -50,7 +51,7 @@ module.exports = {
             }
 
             target = creep.pos.findClosestByRange(FIND_DROPPED_RESOURCES);
-            if (target && target.pos == creep.pos) {
+            if (target && target.pos.x === creep.pos.x && target.pos.y === creep.pos.y) {
                 creep.pickup(target);
             }
         } else {

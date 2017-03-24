@@ -1,3 +1,4 @@
+/// <reference path="../scripts/_references.js" />
 let gameData = require('game.data');
 
 Creep.prototype.getTarget = function() {
@@ -66,9 +67,9 @@ Spawn.prototype.spawnNewCreeps_old = function() {
         role = Game.creeps[spawn.spawning.name].memory.role;
         spawn.room.visual.text('Spawning ' + role, spawn.pos.x + 1, spawn.pos.y, {align: 'left', opacity: 0.8});
     } else if (spawn.room.energyAvailable >= 550) {
-        let harvesters = _.filter(Game.creeps, (creep) => creep.memory.role == 'harvester');
-        let builders = _.filter(Game.creeps, (creep) => creep.memory.role == 'builder');
-        let upgraders = _.filter(Game.creeps, (creep) => creep.memory.role == 'upgrader');
+        let harvesters = _.filter(Game.creeps, (creep) => creep.memory.role === 'harvester');
+        let builders = _.filter(Game.creeps, (creep) => creep.memory.role === 'builder');
+        let upgraders = _.filter(Game.creeps, (creep) => creep.memory.role === 'upgrader');
     
         role = harvesters.length < 3
             ? 'harvester'
@@ -83,25 +84,25 @@ Spawn.prototype.spawnNewCreeps_old = function() {
         if (role) {
             newName = spawn.createCreep([WORK,WORK,WORK,CARRY,CARRY,MOVE,MOVE,MOVE], undefined, {role: role, createdOn: new Date()});
 
-            console.log('Spawning new ' + role + ': ' + newName);
+            console.log(`Spawning new ${role}: ${newName}`);
         } else {
-            let transporters = _.filter(Game.creeps, (creep) => creep.memory.role == 'transporter');
+            let transporters = _.filter(Game.creeps, (creep) => creep.memory.role === 'transporter');
 
             role = transporters.length < 2 ? 'transporter' : '';
 
             if (role) {
                 newName = spawn.createCreep([CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE], undefined, {role: role, createdOn: new Date()});
             
-                console.log('Spawning new ' + role + ': ' + newName);
+                console.log(`Spawning new ${role}: ${newName}`);
             } else {
-                let archers = _.filter(Game.creeps, (creep) => creep.memory.role == 'archer');
+                let archers = _.filter(Game.creeps, (creep) => creep.memory.role === 'archer');
 
                 role = archers.length < 0 ? 'archer' : '';
 
                 if (role) {
                     newName = spawn.createCreep([RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,MOVE], undefined, {role: role, createdOn: new Date()});
                 
-                    console.log('Spawning new ' + role + ': ' + newName);
+                    console.log(`Spawning new ${role}: ${newName}`);
                 }
             }
         }

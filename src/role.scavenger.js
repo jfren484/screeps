@@ -1,3 +1,4 @@
+/// <reference path="../scripts/_references.js" />
 let gameData = require('game.data');
 
 module.exports = {
@@ -19,7 +20,7 @@ module.exports = {
         }
 
         if (creep.memory.dispensing) {
-            let carryingNonEnergy = creepLoad != creep.carry.energy;
+            let carryingNonEnergy = creepLoad !== creep.carry.energy;
 
             let destination = creep.pos.findClosestByRange(FIND_STRUCTURES, {
                 filter: function (s) {

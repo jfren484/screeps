@@ -1,3 +1,4 @@
+/// <reference path="../scripts/_references.js" />
 module.exports = {
     run: function(creep) {
         let targets = creep.room.find(FIND_MY_CONSTRUCTION_SITES);

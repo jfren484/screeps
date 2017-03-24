@@ -1,3 +1,4 @@
+/// <reference path="../scripts/_references.js" />
 let gameData = require('game.data');
 
 function createThreshold(repair, emergency, full) {

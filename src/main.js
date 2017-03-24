@@ -1,3 +1,4 @@
+/// <reference path="../scripts/_references.js" />
 require('base.prototypes');
 
 let gameSpawns = require('game.spawns');

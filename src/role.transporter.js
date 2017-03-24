@@ -1,3 +1,4 @@
+/// <reference path="../scripts/_references.js" />
 let gameData = require('game.data');
 
 module.exports = {
@@ -13,7 +14,7 @@ module.exports = {
             } else if (target && !target.energy && (!target.store || !target.store.energy)) {
                 target = null;
                 creep.memory.targetId = null;
-                creep.say('switching')
+                creep.say('switching');
             }
         } else if (creep.carry.energy === 0) {
             creep.memory.collecting = true;
