@@ -1,20 +1,33 @@
 /// <reference path="../scripts/_references.js" />
 let gameData = require('game.data');
 
+function resume(creep, target) {
+    creep.memory.dispensing = false;
+    creep.memory.renewing = false;
+    creep.memory.isInPosition = false;
+
+    creep.say(target ? 'scavenge' : 'post');
+}
+
 module.exports = {
     run: function (creep) {
         let target = creep.pos.findClosestByRange(FIND_DROPPED_RESOURCES);
         let creepLoad = _.sum(creep.carry);
 
-        if (creep.memory.dispensing && !creepLoad) {
-            creep.memory.dispensing = false;
-            if (target) {
-                creep.say('scavenge');
+        if (creep.memory.renewing) {
+            if (creep.ticksToLive >= 1450 || target) {
+                resume(creep, target);
             } else {
-                creep.memory.isInPosition = false;
-                creep.say('resting');
+                return;
             }
-        } else if (!creep.memory.dispensing && (!target && creepLoad || creepLoad === creep.carryCapacity)) {
+        }
+
+        if (creep.memory.isInPosition && !creep.spawning && creep.ticksToLive < 500) { // When spawning, apparently ticksToLive is 0
+            creep.memory.renewing = true;
+            creep.say('renew');
+        } else if (creep.memory.dispensing && !creepLoad) {
+            resume(creep, target);
+        } else if (!creep.memory.dispensing && (creepLoad === creep.carryCapacity || creepLoad && !target)) {
             creep.memory.dispensing = true;
             creep.say('dispense');
         }
