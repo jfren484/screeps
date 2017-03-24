@@ -51,6 +51,8 @@ module.exports = {
                 creep.moveTo(destination, {visualizePathStyle: {stroke: '#ffffff'}});
             }
         } else if (target) {
+            creep.memory.isInPosition = false;
+
             if (creep.pickup(target) === ERR_NOT_IN_RANGE) {
                 creep.moveTo(target, {visualizePathStyle: {stroke: '#ffffff'}});
             }
