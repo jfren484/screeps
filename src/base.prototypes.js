@@ -95,9 +95,9 @@ Spawn.prototype.spawnNewCreeps_old = function() {
             
                 console.log(`Spawning new ${role}: ${newName}`);
             } else {
-                let archers = _.filter(Game.creeps, (creep) => creep.memory.role === 'archer');
+                let sentries = _.filter(Game.creeps, (creep) => creep.memory.role === 'sentry');
 
-                role = archers.length < 0 ? 'archer' : '';
+                role = sentries.length < 0 ? 'sentry' : '';
 
                 if (role) {
                     newName = spawn.createCreep([RANGED_ATTACK,RANGED_ATTACK,RANGED_ATTACK,MOVE], undefined, {role: role, createdOn: new Date()});

@@ -25,7 +25,7 @@ module.exports = {
                 creep.say('renew');
             }
         } else {
-            creep.takeUnoccupiedPost(gameData.myRooms[creep.room.name].archerPosts);
+            creep.takeUnoccupiedPost(gameData.myRooms[creep.room.name].sentryPosts);
         }
     }
 };
