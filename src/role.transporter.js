@@ -26,8 +26,14 @@ module.exports = {
         if (creep.memory.collecting) {
             if (!target) {
                 let containers = creep.room.find(FIND_STRUCTURES, {filter: function(s) {
-                    return s.structureType === STRUCTURE_CONTAINER && s.store.energy;
+                    return s.structureType === STRUCTURE_CONTAINER && s.store.energy > 250;
                 }});
+
+                if (!containers.length) {
+                    containers = creep.room.find(FIND_MY_STRUCTURES, {filter: function(s) {
+                        return s.structureType === STRUCTURE_STORAGE && s.store.energy;
+                    }});
+                }
                 
                 if (containers.length) {
                     containers = _.sortBy(containers, function(c) {
