@@ -1,4 +1,4 @@
-﻿/// <reference path="../scripts/_references.js" />
+/// <reference path="../scripts/_references.js" />
 let gameData = require('game.data');
 
 module.exports = {
