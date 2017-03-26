@@ -1,10 +1,6 @@
 module.exports = {
     run: function(creep) {
         if (!creep.memory.resigned) {
-            if (creep.carry.energy) {
-                creep.drop(RESOURCE_ENERGY);
-            }
-            
             creep.memory.targetId = null;
             creep.memory.resigned = true;
             creep.say('bye!');
@@ -18,9 +14,18 @@ module.exports = {
                 creep.targetId = spawn.id;
             }
         }
+
+        if (!spawn) {
+            return;
+        }
+
+        let result = spawn.recycleCreep(creep);
         
-        if (spawn && spawn.recycleCreep(creep) === ERR_NOT_IN_RANGE) {
+        if (result === ERR_NOT_IN_RANGE) {
             creep.moveTo(spawn);
+        } else if (creep.carry.energy) {
+            creep.transfer(spawn, RESOURCE_ENERGY);
+            creep.drop(RESOURCE_ENERGY);
         }
     }
 };
