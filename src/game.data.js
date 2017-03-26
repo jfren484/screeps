@@ -12,7 +12,7 @@ let creepRoles = {
         body: [WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE]
     },
     'upgrader': {
-        optimalCount: 3,
+        optimalCount: 2,
         body: [WORK,WORK,WORK,WORK,WORK,CARRY,MOVE]
     },
     'scavenger': {
@@ -43,7 +43,7 @@ let rooms = {
         scavengerPosts: [{x: 30, y: 9}],
         sentryPosts: [{ x: 22, y: 19 }, { x: 28, y: 8 }],
         soldierPosts: [{ x: 28, y: 12 }, { x: 29, y: 12 }, { x: 30, y: 12 }, { x: 31, y: 12 }],
-        upgraderPosts: [{x: 11, y: 27}, {x: 13, y: 27}, {x: 12, y: 27}/*, {x: 10, y: 27}*/],
+        upgraderPosts: [{x: 11, y: 27}, {x: 13, y: 27}/*, {x: 12, y: 27}, {x: 10, y: 27}*/],
         upgraderContainerPosition: {x: 12, y: 27}
     }
 };
