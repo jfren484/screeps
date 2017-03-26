@@ -53,9 +53,7 @@ Spawn.prototype.renewMyAdjacentCreeps = function() {
              .map(function(found) { return found.creep; })
              .filter(function(creep) { return creep.my && creep.ticksToLive < 1400; })
              .forEach(function(creep) {
-                 if (spawn.renewCreep(creep) === 0) {
-                     creep.say('👍');
-                 }
+                 spawn.renewCreep(creep);
              });
     }
 };
