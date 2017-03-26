@@ -1,3 +1,4 @@
 ﻿let modules = {};
 
-function require(path) { }
+// ReSharper disable once UnusedParameter
+function require(path) { return { run: function() {} }; }
