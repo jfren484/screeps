@@ -25,23 +25,24 @@ module.exports = {
 
         if (creep.memory.collecting) {
             if (!target) {
-                let containers = creep.room.find(FIND_STRUCTURES, {filter: function(s) {
-                    return s.structureType === STRUCTURE_CONTAINER && s.store.energy > 500;
+                let stores = creep.room.find(FIND_STRUCTURES, {filter: function(s) {
+                    return (s.structureType === STRUCTURE_CONTAINER ||
+                        s.my && s.structureType === STRUCTURE_STORAGE) &&
+                        s.store.energy;
                 }});
 
-                if (!containers.length) {
-                    containers = creep.room.find(FIND_MY_STRUCTURES, {filter: function(s) {
-                        return s.structureType === STRUCTURE_STORAGE && s.store.energy;
-                    }});
-                }
-                
-                if (containers.length) {
-                    containers = _.sortBy(containers, function(c) {
-                        let bucket300 = -Math.round(c.store.energy / 300) * 300;
-                        return bucket300 + creep.pos.getRangeTo(c);
+                if (stores.length) {
+                    stores = _.sortBy(stores, function (s) {
+                        let firstSort = s.structureType === STRUCTURE_CONTAINER && s.store.energy >= 500
+                            ? -10000
+                            : s.structureType === STRUCTURE_STORAGE
+                                ? -5000
+                                : 0;
+                        let bucket300 = -Math.round(s.store.energy / 300) * 300;
+                        return firstSort + bucket300 + creep.pos.getRangeTo(s);
                     });
                     
-                    target = containers[0];
+                    target = stores[0];
                     creep.memory.targetId = target.id;
                 } else {
                     creep.memory.collecting = false;
