@@ -1,6 +1,4 @@
 /// <reference path="../scripts/_references.js" />
-let gameData = require('game.data');
-
 module.exports = {
     run: function(creep) {
         let target = creep.getTarget();
@@ -63,7 +61,7 @@ module.exports = {
                         && (s.structureType === STRUCTURE_CONTAINER && s.availableCapacity() >= creep.carry.energy
                         || s.structureType === STRUCTURE_STORAGE && s.storeCapacity - _.sum(s.store) >= creep.carry.energy
                         || (s.structureType === STRUCTURE_EXTENSION || s.structureType === STRUCTURE_TOWER)
-                            && s.energyCapacity - s.energy > 0
+                            && s.energyCapacity > s.energy
                         || s.structureType === STRUCTURE_SPAWN && s.energyCapacity - s.energy > creep.carry.energy);
                 }});
                 
@@ -72,13 +70,11 @@ module.exports = {
                         let sort = 0;
                         
                         if (c.structureType === STRUCTURE_SPAWN && c.energy <= 100) {
-                            sort = -1000;
-                        }
-                        
-                        if (c.structureType === STRUCTURE_CONTAINER) {
-                            sort += Math.round(c.store.energy / 500) * 500;
+                            sort = -10000;
+                        } else if (c.structureType === STRUCTURE_CONTAINER) {
+                            sort += Math.round(c.store.energy / 300) * 300;
                         } else if (c.structureType === STRUCTURE_STORAGE) {
-                            sort = 1200;
+                            sort = 600;
                         }
 
                         return sort + creep.pos.getRangeTo(c);

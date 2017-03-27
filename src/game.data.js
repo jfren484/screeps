@@ -4,7 +4,7 @@ let creepRoles = {
         body: [WORK,WORK,WORK,WORK,WORK,WORK,CARRY,MOVE,MOVE,MOVE]
     },
     'transporter': {
-        optimalCount: 2,
+        optimalCount: 3,
         body: [CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE]
     },
     'builder': {
