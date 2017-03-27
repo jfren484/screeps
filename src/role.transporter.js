@@ -62,15 +62,16 @@ module.exports = {
                     return s.id !== creep.memory.lastCollectedFromId
                         && (s.structureType === STRUCTURE_CONTAINER && s.availableCapacity() >= creep.carry.energy
                         || s.structureType === STRUCTURE_STORAGE && s.storeCapacity - _.sum(s.store) >= creep.carry.energy
-                        || (s.structureType === STRUCTURE_SPAWN || s.structureType === STRUCTURE_EXTENSION || s.structureType === STRUCTURE_TOWER)
-                            && s.energyCapacity - s.energy > 0);
+                        || (s.structureType === STRUCTURE_EXTENSION || s.structureType === STRUCTURE_TOWER)
+                            && s.energyCapacity - s.energy > 0
+                        || s.structureType === STRUCTURE_SPAWN && s.energyCapacity - s.energy > creep.carry.energy);
                 }});
                 
                 if (receivers.length) {
                     receivers = _.sortBy(receivers, function(c) {
                         let sort = 0;
                         
-                        if (c.structureType === STRUCTURE_SPAWN && c.energy < 200) {
+                        if (c.structureType === STRUCTURE_SPAWN && c.energy <= 100) {
                             sort = -1000;
                         }
                         
