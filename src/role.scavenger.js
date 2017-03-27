@@ -39,7 +39,7 @@ module.exports = {
                 filter: function (s) {
                     return s.structureType === STRUCTURE_CONTAINER && s.availableCapacity() > 0 ||
                         s.my && (s.structureType === STRUCTURE_STORAGE && s.capacity > _.sum(s.store) ||
-                        !carryingNonEnergy && s.structureType === STRUCTURE_SPAWN && s.energyCapacity > s.energy);
+                        !carryingNonEnergy && s.structureType === STRUCTURE_SPAWN && s.energyCapacity - s.energy >= creep.carry.energy);
                 }
             });
 
