@@ -16,7 +16,7 @@ let creepRoles = {
         body: [WORK,WORK,WORK,WORK,WORK,CARRY,MOVE]
     },
     'scavenger': {
-        optimalCount: 2,
+        optimalCount: 1,
         body: [CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE]
     },
     'sentry': {

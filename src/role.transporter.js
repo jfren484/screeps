@@ -1,8 +1,8 @@
 /// <reference path="../scripts/_references.js" />
 module.exports = {
-    run: function(creep) {
+    run: function (creep) {
         let target = creep.getTarget();
-        
+
         if (creep.memory.collecting) {
             if (creep.carry.energy === creep.carryCapacity) {
                 creep.memory.collecting = false;
@@ -23,11 +23,13 @@ module.exports = {
 
         if (creep.memory.collecting) {
             if (!target) {
-                let stores = creep.room.find(FIND_STRUCTURES, {filter: function(s) {
-                    return (s.structureType === STRUCTURE_CONTAINER ||
-                        s.my && s.structureType === STRUCTURE_STORAGE) &&
-                        s.store.energy;
-                }});
+                let stores = creep.room.find(FIND_STRUCTURES, {
+                    filter: function (s) {
+                        return (s.structureType === STRUCTURE_CONTAINER ||
+                            s.my && s.structureType === STRUCTURE_STORAGE) &&
+                            s.store.energy;
+                    }
+                });
 
                 if (stores.length) {
                     stores = _.sortBy(stores, function (s) {
@@ -39,7 +41,7 @@ module.exports = {
                         let bucket300 = -Math.round(s.store.energy / 300) * 300;
                         return firstSort + bucket300 + creep.pos.getRangeTo(s);
                     });
-                    
+
                     target = stores[0];
                     creep.memory.targetId = target.id;
                 } else {
@@ -56,19 +58,21 @@ module.exports = {
             }
         } else {
             if (!target) {
-                let receivers = creep.room.find(FIND_STRUCTURES, {filter: function(s) {
-                    return s.id !== creep.memory.lastCollectedFromId
-                        && (s.structureType === STRUCTURE_CONTAINER && s.availableCapacity() >= creep.carry.energy
-                        || s.structureType === STRUCTURE_STORAGE && s.storeCapacity - _.sum(s.store) >= creep.carry.energy
-                        || (s.structureType === STRUCTURE_EXTENSION || s.structureType === STRUCTURE_TOWER)
+                let receivers = creep.room.find(FIND_STRUCTURES, {
+                    filter: function (s) {
+                        return s.id !== creep.memory.lastCollectedFromId
+                            && (s.structureType === STRUCTURE_CONTAINER && s.availableCapacity() >= creep.carry.energy
+                            || s.structureType === STRUCTURE_STORAGE && s.storeCapacity - _.sum(s.store) >= creep.carry.energy
+                            || (s.structureType === STRUCTURE_EXTENSION || s.structureType === STRUCTURE_TOWER)
                             && s.energyCapacity > s.energy
-                        || s.structureType === STRUCTURE_SPAWN && s.energyCapacity - s.energy > creep.carry.energy);
-                }});
-                
+                            || s.structureType === STRUCTURE_SPAWN && s.energyCapacity - s.energy > creep.carry.energy);
+                    }
+                });
+
                 if (receivers.length) {
-                    receivers = _.sortBy(receivers, function(c) {
+                    receivers = _.sortBy(receivers, function (c) {
                         let sort = 0;
-                        
+
                         if (c.structureType === STRUCTURE_SPAWN && c.energy <= 100) {
                             sort = -10000;
                         } else if (c.structureType === STRUCTURE_CONTAINER) {
@@ -79,12 +83,12 @@ module.exports = {
 
                         return sort + creep.pos.getRangeTo(c);
                     });
-                    
+
                     target = receivers[0];
                     creep.memory.targetId = target.id;
                 }
             }
-            
+
             if (target) {
                 let result = creep.transfer(target, RESOURCE_ENERGY);
                 if (result === ERR_NOT_IN_RANGE) {

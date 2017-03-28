@@ -10,7 +10,7 @@ module.exports = {
         } else if (creep.memory.upgrading && creep.carry.energy === 0) {
             creep.memory.upgrading = false;
             creep.say('load');
-        } else if (creep.memory.renewing && (creep.ticksToLive >= 1450 || Game.spawns['Spawn1'].energy < 50)) {
+        } else if (creep.memory.renewing && (creep.ticksToLive >= 1450 || creep.room.energyAvailable < 50)) {
             creep.memory.renewing = false;
             creep.say('load');
         } else if (!creep.memory.upgrading && !creep.memory.renewing && creep.carry.energy === creep.carryCapacity) {
@@ -27,7 +27,7 @@ module.exports = {
             }
         } else if (creep.memory.renewing) {
             creep.moveTo(Game.spawns['Spawn1']);
-            if (!Game.spawns['Spawn1'].energy && creep.energy) {
+            if (!creep.room.energyAvailable && creep.energy) {
                 creep.transfer(Game.spawns['Spawn1'], RESOURCE_ENERGY);
             }
         } else {
