@@ -46,6 +46,8 @@ Room.prototype.getRepairTargets = function () {
 };
 
 Room.prototype.stats = function () {
+    const width = 20;
+
     let creeps = Object
         .keys(gameData.creepRoles)
         .sort()
@@ -55,7 +57,7 @@ Room.prototype.stats = function () {
             let names = creeps.map(function (c) {
                 return c.name;
             });
-            let pad = ' '.repeat(15 - roleName.length);
+            let pad = ' '.repeat(width - roleName.length);
             return roleName.charAt(0).toUpperCase() + roleName.slice(1) + ':' + pad + count + ' (' + names.join(', ') + ')';
         })
         .join('\n');
@@ -76,7 +78,8 @@ Room.prototype.stats = function () {
         .map(function (structureType) {
             let repairTargets = repairs[structureType];
             let count = repairTargets.length;
-            let pad = ' '.repeat(15 - structureType.length);
+
+            let pad = ' '.repeat(width - structureType.length);
             return structureType.charAt(0).toUpperCase() + structureType.slice(1) + ':' + pad + count;
         })
         .join('\n');
