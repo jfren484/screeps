@@ -10,13 +10,13 @@ module.exports = {
                 }
             }
         } else {
-            let attackPosition = Game.flags['Attack Position'];
+            let claimPosition = Game.flags['Claim'];
 
-            if (attackPosition && creep.pos.getRangeTo(attackPosition) < 2) {
+            if (claimPosition && creep.pos.getRangeTo(claimPosition) < 2) {
                 creep.memory.isClaiming = true;
             }
 
-            creep.moveTo(attackPosition);
+            creep.moveTo(claimPosition);
         }
     }
 };
