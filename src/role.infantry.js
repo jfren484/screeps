@@ -39,7 +39,8 @@ module.exports = {
             } else {
                 creep.moveTo(creep.memory.attackPosition);
             }
-        } else if (roomData && roomData.targetPosition && roomData.targetPosition.roomName != creep.room.name) {
+        } else if (!creep.memory.isMovingToAttack && roomData && roomData.targetPosition
+            && roomData.targetPosition.roomName != creep.room.name) {
             creep.memory.isMovingToAttack = true;
             creep.memory.attackPosition = roomData.targetPosition;
             creep.memory.isInPosition = false;
