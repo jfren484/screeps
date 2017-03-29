@@ -30,6 +30,10 @@ let creepRoles = {
     'recycler': {
         optimalCount: 0,
         body: []
+    },
+    'claimer': {
+        optimalCount: 0,
+        body: []
     }
 };
 
