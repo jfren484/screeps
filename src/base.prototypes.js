@@ -31,6 +31,20 @@ Creep.prototype.takeUnoccupiedPost = function (postPosArray) {
     return ERR_NO_PATH;
 };
 
+Room.prototype.getRepairTargets = function () {
+    return this.find(FIND_STRUCTURES, {
+        filter: function (s) {
+            return (s.structureType === STRUCTURE_WALL && s.hits < 50000)
+                || (s.structureType === STRUCTURE_RAMPART && s.hits < 50000)
+                || (s.structureType === STRUCTURE_ROAD && s.hits < 4500)
+                || (s.structureType === STRUCTURE_CONTAINER && s.hits < 240000)
+                || (s.structureType === STRUCTURE_TOWER && s.hits < s.hitsMax)
+                || (s.structureType === STRUCTURE_EXTENSION && s.hits < s.hitsMax)
+                || (s.structureType === STRUCTURE_STORAGE && s.hits < s.hitsMax);
+        }
+    });
+};
+
 Room.prototype.stats = function () {
     let creeps = Object
         .keys(gameData.creepRoles)
@@ -46,9 +60,28 @@ Room.prototype.stats = function () {
         })
         .join('\n');
 
-    let repairs = 'TBD';
+    let repairTargets = this.getRepairTargets();
+    let repairs = {};
+    for (let i = 0; i < repairTargets.length; ++i) {
+        let repairTarget = repairTargets[i];
+        if (!repairs[repairTarget.structureType]) {
+            repairs[repairTarget.structureType] = [];
+        }
+        repairs[repairTarget.structureType].push(repairTarget);
+    }
 
-    return 'Creeps:\n' + creeps + '\n\nRepairs:\n' + repairs;
+    let repair = Object
+        .keys(repairs)
+        .sort()
+        .map(function (structureType) {
+            let repairTargets = repairs[structureType];
+            let count = repairTargets.length;
+            let pad = ' '.repeat(15 - structureType.length);
+            return structureType.charAt(0).toUpperCase() + structureType.slice(1) + ':' + pad + count;
+        })
+        .join('\n');
+
+    return 'Creeps:\n' + creeps + '\n\nRepairs:\n' + repair;
 };
 
 Spawn.prototype.renewMyAdjacentCreeps = function () {

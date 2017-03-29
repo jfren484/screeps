@@ -18,13 +18,13 @@ module.exports = {
             let target = creep.getTarget();
 
             if (!target) {
-                target = creep.findClosestByRange(FIND_HOSTILE_CREEPS)
-                    || creep.findClosestByRange(FIND_STRUCTURES, {
+                target = creep.pos.findClosestByRange(FIND_HOSTILE_CREEPS)
+                    || creep.pos.findClosestByRange(FIND_STRUCTURES, {
                         filter: function (s) {
                             return !s.my && s.structureType === STRUCTURE_SPAWN;
                         }
                     })
-                    || creep.findClosestByRange(FIND_STRUCTURES, {
+                    || creep.pos.findClosestByRange(FIND_STRUCTURES, {
                         filter: function (s) {
                             return !s.my && s.structureType === STRUCTURE_EXTENSION;
                         }

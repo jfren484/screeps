@@ -17,12 +17,8 @@ module.exports = {
         if (creep.memory.renewing) {
             if (creep.ticksToLive >= 1450 || target) {
                 resume(creep, target);
-            } else {
-                return;
             }
-        }
-
-        if (creep.memory.isInPosition && !creep.spawning && creep.ticksToLive < 800) { // When spawning, apparently ticksToLive is 0
+        } else if (creep.memory.isInPosition && !creep.spawning && creep.ticksToLive < 800) { // When spawning, apparently ticksToLive is 0
             creep.memory.renewing = true;
             creep.say('renew');
         } else if (creep.memory.dispensing && !creepLoad) {
@@ -32,7 +28,9 @@ module.exports = {
             creep.say('dispense');
         }
 
-        if (creep.memory.dispensing) {
+        if (creep.memory.renewing) {
+            creep.moveTo(Game.spawns['Spawn1']);
+        } else if (creep.memory.dispensing) {
             let carryingNonEnergy = creepLoad !== creep.carry.energy;
 
             let destination = creep.pos.findClosestByRange(FIND_STRUCTURES, {
