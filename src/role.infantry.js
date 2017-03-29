@@ -3,37 +3,29 @@ let gameData = require('game.data');
 
 module.exports = {
     run: function (creep) {
-        let roomData = gameData.myRooms[creep.room.name];
         let attackPosition = Game.flags['Attack Position'];
 
         if (creep.memory.isMovingToAttack && attackPosition && creep.pos.getRangeTo(attackPosition) < 2) {
             creep.memory.isMovingToAttack = false;
             creep.memory.isAttacking = true;
-            creep.memory.targetId = null;
         }
 
         if (creep.memory.isMovingToAttack && !creep.memory.renewing) {
             creep.moveTo(attackPosition);
         } else if (creep.memory.isAttacking) {
-            let target = creep.getTarget();
-
-            if (!target) {
-                target = creep.pos.findClosestByRange(FIND_HOSTILE_CREEPS)
-                    || creep.pos.findClosestByRange(FIND_STRUCTURES, {
-                        filter: function (s) {
-                            return !s.my && s.structureType === STRUCTURE_SPAWN;
-                        }
-                    })
-                    || creep.pos.findClosestByRange(FIND_STRUCTURES, {
-                        filter: function (s) {
-                            return !s.my && s.structureType === STRUCTURE_EXTENSION;
-                        }
-                    });
-            }
+            let target = creep.pos.findClosestByRange(FIND_HOSTILE_CREEPS)
+                || creep.pos.findClosestByRange(FIND_STRUCTURES, {
+                    filter: function (s) {
+                        return !s.my && s.structureType === STRUCTURE_SPAWN;
+                    }
+                })
+                || creep.pos.findClosestByRange(FIND_STRUCTURES, {
+                    filter: function (s) {
+                        return !s.my && s.structureType === STRUCTURE_EXTENSION;
+                    }
+                });
 
             if (target) {
-                creep.memory.targetId = target.id;
-
                 if (creep.attack(target) === ERR_NOT_IN_RANGE) {
                     creep.moveTo(target);
                 }
