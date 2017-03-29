@@ -43,7 +43,6 @@ let rooms = {
         scavengerPosts: [{x: 23, y: 21}, {x: 31, y: 10}],
         sentryPosts: [{ x: 23, y: 19 }, { x: 28, y: 8 }],
         soldierPosts: [{ x: 27, y: 12 }, { x: 28, y: 12 }, { x: 29, y: 12 }, { x: 30, y: 12 }, { x: 31, y: 12 }],
-        targetPosition: new RoomPosition(19, 14, 'W83S61'),
         upgraderPosts: [{x: 11, y: 27}, {x: 13, y: 27}/*, {x: 12, y: 27}, {x: 10, y: 27}*/],
         upgraderContainerPosition: {x: 12, y: 27}
     }

@@ -4,15 +4,16 @@ let gameData = require('game.data');
 module.exports = {
     run: function (creep) {
         let roomData = gameData.myRooms[creep.room.name];
+        let attackPosition = Game.flags['Attack Position'];
 
-        if (creep.memory.isMovingToAttack && creep.pos.getRangeTo(creep.memory.attackPosition) < 2) {
+        if (creep.memory.isMovingToAttack && attackPosition && creep.pos.getRangeTo(attackPosition) < 2) {
             creep.memory.isMovingToAttack = false;
             creep.memory.isAttacking = true;
             creep.memory.targetId = null;
         }
 
         if (creep.memory.isMovingToAttack && !creep.memory.renewing) {
-            creep.moveTo(creep.memory.attackPosition);
+            creep.moveTo(attackPosition);
         } else if (creep.memory.isAttacking) {
             let target = creep.getTarget();
 
@@ -37,12 +38,10 @@ module.exports = {
                     creep.moveTo(target);
                 }
             } else {
-                creep.moveTo(creep.memory.attackPosition);
+                creep.moveTo(attackPosition);
             }
-        } else if (!creep.memory.isMovingToAttack && roomData && roomData.targetPosition
-            && roomData.targetPosition.roomName != creep.room.name) {
+        } else if (!creep.memory.isMovingToAttack && attackPosition && attackPosition.roomName != creep.room.name) {
             creep.memory.isMovingToAttack = true;
-            creep.memory.attackPosition = roomData.targetPosition;
             creep.memory.isInPosition = false;
             creep.memory.renewing = true;
         } else if (creep.memory.renewing) {
