@@ -55,8 +55,8 @@ module.exports = {
         } else if (creep.memory.repairing) {
             let toRepair = creep.room.find(FIND_STRUCTURES, {
                 filter: function(s) {
-                    return (s.structureType === STRUCTURE_WALL && s.hits < 75000)
-                        || (s.structureType === STRUCTURE_RAMPART && s.hits < 75000)
+                    return (s.structureType === STRUCTURE_WALL && s.hits < 50000)
+                        || (s.structureType === STRUCTURE_RAMPART && s.hits < 50000)
                         || (s.structureType === STRUCTURE_ROAD && s.hits < 4500)
                         || (s.structureType === STRUCTURE_CONTAINER && s.hits < 240000)
                         || (s.structureType === STRUCTURE_TOWER && s.hits < s.hitsMax)
