@@ -54,14 +54,14 @@ module.exports = {
             }
         } else if (creep.memory.repairing) {
             let toRepair = creep.room.find(FIND_STRUCTURES, {
-                filter: function(struct) {
-                    return (struct.structureType === STRUCTURE_WALL && struct.hits < 100000)
-                        || (struct.structureType === STRUCTURE_RAMPART && struct.hits < 100000)
-                        || (struct.structureType === STRUCTURE_ROAD && struct.hits < 4500)
-                        || (struct.structureType === STRUCTURE_CONTAINER && struct.hits < 240000)
-                        || (struct.structureType === STRUCTURE_TOWER && struct.hits < struct.hitsMax)
-                        || (struct.structureType === STRUCTURE_EXTENSION && struct.hits < struct.hitsMax)
-                        || (struct.structureType === STRUCTURE_STORAGE && struct.hits < struct.hitsMax);
+                filter: function(s) {
+                    return (s.structureType === STRUCTURE_WALL && s.hits < 75000)
+                        || (s.structureType === STRUCTURE_RAMPART && s.hits < 75000)
+                        || (s.structureType === STRUCTURE_ROAD && s.hits < 4500)
+                        || (s.structureType === STRUCTURE_CONTAINER && s.hits < 240000)
+                        || (s.structureType === STRUCTURE_TOWER && s.hits < s.hitsMax)
+                        || (s.structureType === STRUCTURE_EXTENSION && s.hits < s.hitsMax)
+                        || (s.structureType === STRUCTURE_STORAGE && s.hits < s.hitsMax);
                 }
             });
             if (toRepair.length) {

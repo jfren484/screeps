@@ -1,3 +1,3 @@
-(new Room).creepStats();
+(new Room).stats();
 
 (new Spawn).spawnNewCreeps_old();

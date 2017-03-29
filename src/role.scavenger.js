@@ -22,7 +22,7 @@ module.exports = {
             }
         }
 
-        if (creep.memory.isInPosition && !creep.spawning && creep.ticksToLive < 500) { // When spawning, apparently ticksToLive is 0
+        if (creep.memory.isInPosition && !creep.spawning && creep.ticksToLive < 800) { // When spawning, apparently ticksToLive is 0
             creep.memory.renewing = true;
             creep.say('renew');
         } else if (creep.memory.dispensing && !creepLoad) {
