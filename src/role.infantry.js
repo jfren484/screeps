@@ -5,13 +5,13 @@ module.exports = {
     run: function (creep) {
         let roomData = gameData.myRooms[creep.room.name];
 
-        if (creep.memory.isMovingToAttack && creep.getRangeTo(creep.memory.attackPosition) < 2) {
+        if (creep.memory.isMovingToAttack && creep.pos.getRangeTo(creep.memory.attackPosition) < 2) {
             creep.memory.isMovingToAttack = false;
             creep.memory.isAttacking = true;
             creep.memory.targetId = null;
         }
 
-        if (creep.memory.isMovingToAttack) {
+        if (creep.memory.isMovingToAttack && !creep.memory.renewing) {
             creep.moveTo(creep.memory.attackPosition);
         } else if (creep.memory.isAttacking) {
             let target = creep.getTarget();
