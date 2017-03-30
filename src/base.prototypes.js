@@ -105,6 +105,12 @@ Spawn.prototype.renewMyAdjacentCreeps = function () {
     }
 };
 
+Spawn.prototype.createCreepWithRole = function (roleName, creepName) {
+    let creepRole = gameData.creepRoles[roleName];
+
+    return this.createCreep(creepRole.body, creepName, {role: roleName, createdOn: new Date()})
+};
+
 Spawn.prototype.spawnNewCreeps_old = function () {
     let spawn = this, role, newName;
 
@@ -174,7 +180,7 @@ Spawn.prototype.spawnNewCreeps = function () {
 
         let result = spawn.canCreateCreep(creepRole.body);
         if (result === OK) {
-            let newName = spawn.createCreep(creepRole.body, undefined, {role: roleName, createdOn: new Date()});
+            let newName = spawn.createCreepWithRole(roleName, undefined);
 
             console.log(`Spawning new ${roleName}: ${newName}`);
         } else if (result !== ERR_NOT_ENOUGH_ENERGY) {
