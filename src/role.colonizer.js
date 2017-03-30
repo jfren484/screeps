@@ -6,6 +6,7 @@ function isColonizing(creep) {
         if (!claimFlag) return;
 
         if (creep.pos.getRangeTo(claimFlag) < 2) {
+            creep.memory.action = 'harvest';
             creep.memory.colonizing = true;
         } else {
             creep.moveTo(claimFlag, {visualizePathStyle: {stroke: '#ffffff'}});

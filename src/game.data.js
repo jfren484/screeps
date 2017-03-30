@@ -29,7 +29,7 @@ let creepRoles = {
     },
     'claimer': {
         optimalCount: 0,
-        body: [CLAIM, MOVE, MOVE]
+        body: [CLAIM, MOVE]
     },
     'colonizer': {
         optimalCount: 0,
