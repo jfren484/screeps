@@ -30,11 +30,16 @@ module.exports = {
         const building = creep.memory.action === 'build';
         const renewing = creep.memory.action === 'renew';
 
-        if (!renewing && spawn && !creep.spawning && creep.ticksToLive < 100) { // When spawning, apparently ticksToLive is 0
-            creep.memory.action = 'renew';
-            creep.say(creep.memory.action);
+        if (!renewing && !creep.spawning && creep.ticksToLive < 100) { // When spawning, apparently ticksToLive is 0
+            if (spawn) {
+                creep.memory.action = 'renew';
+                creep.say(creep.memory.action);
+            } else {
+                creep.memory.action = 'upgrade';
+                creep.say(creep.memory.action);
+            }
         } else if ((upgrading || building) && creep.carry.energy === 0
-            || upgrading && buildTarget
+            || upgrading && buildTarget && creep.ticksToLive > 100
             || building && !buildTarget
             || renewing && (creep.ticksToLive >= 1450 || creep.room.energyAvailable < 50)) {
             creep.memory.action = 'harvest';
