@@ -48,7 +48,7 @@ Room.prototype.getRepairTargets = function () {
 Room.prototype.stats = function () {
     const width = 20;
 
-    let creeps = Object
+    let creepStats = Object
         .keys(gameData.creepRoles)
         .sort()
         .map(function (roleName) {
@@ -72,19 +72,19 @@ Room.prototype.stats = function () {
         repairs[repairTarget.structureType].push(repairTarget);
     }
 
-    let repair = Object
+    let repairStats = Object
         .keys(repairs)
         .sort()
         .map(function (structureType) {
-            let repairTargets = repairs[structureType];
-            let count = repairTargets.length;
+            let count = repairs[structureType].length;
 
             let pad = ' '.repeat(width - structureType.length);
             return structureType.charAt(0).toUpperCase() + structureType.slice(1) + ':' + pad + count;
         })
-        .join('\n');
+        .join('\n')
+        || 'None';
 
-    return 'Creeps:\n' + creeps + '\n\nRepairs:\n' + repair;
+    return `Creeps:\n${creepStats}\n\nRepairs:\n${repairStats}`;
 };
 
 Spawn.prototype.renewMyAdjacentCreeps = function () {

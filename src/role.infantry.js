@@ -32,7 +32,7 @@ module.exports = {
             } else {
                 creep.moveTo(attackPosition);
             }
-        } else if (!creep.memory.isMovingToAttack && attackPosition && attackPosition.roomName != creep.room.name) {
+        } else if (!creep.memory.isMovingToAttack && attackPosition && attackPosition.roomName !== creep.room.name) {
             creep.memory.isMovingToAttack = true;
             creep.memory.isInPosition = false;
             creep.memory.renewing = true;
@@ -46,6 +46,11 @@ module.exports = {
                 creep.say('form up');
             }
         } else if (!creep.memory.isInPosition) {
+            if (gameData.myRooms[creep.room.name] && gameData.myRooms[creep.room.name].soldierPosts) {
+                creep.takeUnoccupiedPost(gameData.myRooms[creep.room.name].soldierPosts);
+            } else {
+                creep.moveTo(Game.flags['Home']);
+            }
             creep.takeUnoccupiedPost(gameData.myRooms[creep.room.name].soldierPosts);
         } else if (creep.ticksToLive < 200) {
             creep.memory.isInPosition = false;
