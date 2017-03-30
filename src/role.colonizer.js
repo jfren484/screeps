@@ -5,12 +5,9 @@ function isColonizing(creep) {
         let claimFlag = Game.flags['Claim'];
         if (!claimFlag) return;
 
-        const rangeTo = creep.pos.getRangeTo(claimFlag);
-
-        if (rangeTo < 2) {
+        if (creep.pos.getRangeTo(claimFlag) < 2) {
             creep.memory.colonizing = true;
         } else {
-            creep.say(rangeTo);
             creep.moveTo(claimFlag, {visualizePathStyle: {stroke: '#ffffff'}});
         }
     }
@@ -22,8 +19,8 @@ module.exports = {
     run: function (creep) {
         if (!isColonizing(creep)) return;
 
-        let spawn = creep.room.pos.findClosestByRange(FIND_MY_SPAWNS);
-        let buildTarget = creep.room.pos.findClosestByRange(FIND_CONSTRUCTION_SITES);
+        let spawn = creep.pos.findClosestByRange(FIND_MY_SPAWNS);
+        let buildTarget = creep.pos.findClosestByRange(FIND_CONSTRUCTION_SITES);
 
         const harvesting = creep.memory.action === 'harvest';
         const upgrading = creep.memory.action === 'upgrade';

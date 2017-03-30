@@ -4,9 +4,10 @@ module.exports = {
             let spawn = Game.spawns[spawnName];
 
         	spawn.renewMyAdjacentCreeps();
-    
-        	spawn.spawnNewCreeps();
-        // 	spawn.spawnNewCreeps_old();
+
+        	if (spawnName === 'Spawn1') {
+                spawn.spawnNewCreeps();
+            }
         }
     }
 };

@@ -111,55 +111,6 @@ Spawn.prototype.createCreepWithRole = function (roleName, creepName) {
     return this.createCreep(creepRole.body, creepName, {role: roleName, createdOn: new Date()})
 };
 
-Spawn.prototype.spawnNewCreeps_old = function () {
-    let spawn = this, role, newName;
-
-    if (spawn.spawning) {
-        role = Game.creeps[spawn.spawning.name].memory.role;
-        spawn.room.visual.text(`Spawning ${role}`, spawn.pos.x + 1, spawn.pos.y, {align: 'left', opacity: 0.8});
-    } else if (spawn.room.energyAvailable >= 550) {
-        let harvesters = _.filter(Game.creeps, (creep) => creep.memory.role === 'harvester');
-        let builders = _.filter(Game.creeps, (creep) => creep.memory.role === 'builder');
-        let upgraders = _.filter(Game.creeps, (creep) => creep.memory.role === 'upgrader');
-
-        role = harvesters.length < 3
-            ? 'harvester'
-            : upgraders.length < 1
-                ? 'upgrader'
-                : builders.length < 3
-                    ? 'builder'
-                    : upgraders.length < 2
-                        ? 'upgrader'
-                        : null;
-
-        if (role) {
-            newName = spawn.createCreep([WORK, WORK, WORK, CARRY, CARRY, MOVE, MOVE, MOVE], undefined, {role: role, createdOn: new Date()});
-
-            console.log(`Spawning new ${role}: ${newName}`);
-        } else {
-            let transporters = _.filter(Game.creeps, (creep) => creep.memory.role === 'transporter');
-
-            role = transporters.length < 2 ? 'transporter' : '';
-
-            if (role) {
-                newName = spawn.createCreep([CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE], undefined, {role: role, createdOn: new Date()});
-
-                console.log(`Spawning new ${role}: ${newName}`);
-            } else {
-                let sentries = _.filter(Game.creeps, (creep) => creep.memory.role === 'sentry');
-
-                role = sentries.length < 0 ? 'sentry' : '';
-
-                if (role) {
-                    newName = spawn.createCreep([RANGED_ATTACK, RANGED_ATTACK, RANGED_ATTACK, MOVE], undefined, {role: role, createdOn: new Date()});
-
-                    console.log(`Spawning new ${role}: ${newName}`);
-                }
-            }
-        }
-    }
-};
-
 Spawn.prototype.spawnNewCreeps = function () {
     let spawn = this;
 
