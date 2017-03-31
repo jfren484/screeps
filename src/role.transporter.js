@@ -78,7 +78,7 @@ module.exports = {
                         } else if (c.structureType === STRUCTURE_CONTAINER) {
                             sort += Math.round(c.store.energy / 300) * 300;
                         } else if (c.structureType === STRUCTURE_STORAGE) {
-                            sort = 600;
+                            sort = 300;
                         }
 
                         return sort + creep.pos.getRangeTo(c);
