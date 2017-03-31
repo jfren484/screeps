@@ -33,13 +33,13 @@ module.exports = {
 
                 if (stores.length) {
                     stores = _.sortBy(stores, function (s) {
-                        let firstSort = s.structureType === STRUCTURE_CONTAINER && s.store.energy >= 500
+                        let firstSort = s.structureType === STRUCTURE_CONTAINER && s.store.energy >= 1000
                             ? -10000
                             : s.structureType === STRUCTURE_STORAGE
                                 ? -5000
                                 : 0;
-                        let bucket300 = -Math.round(s.store.energy / 300) * 300;
-                        return firstSort + bucket300 + creep.pos.getRangeTo(s);
+
+                        return firstSort + creep.pos.getRangeTo(s);
                     });
 
                     target = stores[0];
