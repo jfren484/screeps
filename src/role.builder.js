@@ -56,8 +56,17 @@ module.exports = {
             let toRepair = creep.room.getRepairTargets();
 
             if (toRepair.length) {
-                let ramparts = _.filter(toRepair, (s) => s.structureType === STRUCTURE_RAMPART);
-                target = ramparts.length ? ramparts[0] : toRepair[0];
+                toRepair = _.sortBy(toRepair, function (s) {
+                    let firstSort = s.structureType === STRUCTURE_RAMPART && s.hits < 1000
+                        ? -10000
+                        : s.structureType === STRUCTURE_CONTAINER
+                            ? -5000
+                            : 0;
+
+                    return firstSort + creep.pos.getRangeTo(s);
+                });
+
+                target = toRepair[0];
                 if (creep.repair(target) === ERR_NOT_IN_RANGE) {
                     creep.moveTo(target, {visualizePathStyle: {stroke: '#ffffff'}});
                 }
