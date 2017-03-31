@@ -3,7 +3,7 @@
 function isColonizing(creep) {
     if (!creep.memory.colonizing) {
         let claimFlag = Game.flags['Claim'];
-        if (!claimFlag) return;
+        if (!claimFlag) return false;
 
         if (creep.pos.getRangeTo(claimFlag) < 2) {
             creep.memory.action = 'harvest';
@@ -22,13 +22,16 @@ module.exports = {
 
         let spawn = creep.pos.findClosestByRange(FIND_MY_SPAWNS);
         let buildTarget = creep.pos.findClosestByRange(FIND_CONSTRUCTION_SITES);
+        let repairTargets = creep.room.getRepairTargets();
+        let repairTarget = repairTargets.length ? repairTargets[0] : null;
 
         const harvesting = creep.memory.action === 'harvest';
         const upgrading = creep.memory.action === 'upgrade';
         const building = creep.memory.action === 'build';
         const renewing = creep.memory.action === 'renew';
+        const repairing = creep.memory.action === 'repair';
 
-        if (!renewing && !creep.spawning && creep.ticksToLive < 100) { // When spawning, apparently ticksToLive is 0
+        if (!renewing && !creep.spawning && creep.ticksToLive < 100) {
             if (spawn) {
                 creep.memory.action = 'renew';
                 creep.say(creep.memory.action);
@@ -36,15 +39,19 @@ module.exports = {
                 creep.memory.action = 'upgrade';
                 creep.say(creep.memory.action);
             }
-        } else if ((upgrading || building) && creep.carry.energy === 0
+        } else if ((upgrading || building || repairing) && creep.carry.energy === 0
             || upgrading && buildTarget && creep.ticksToLive > 100
             || building && !buildTarget
+            || repairing && !repairTarget
             || renewing && (creep.ticksToLive >= 1450 || creep.room.energyAvailable < 50)) {
             creep.memory.action = 'harvest';
             creep.say(creep.memory.action);
         } else if (harvesting && creep.carry.energy === creep.carryCapacity) {
             if (buildTarget) {
                 creep.memory.action = 'build';
+                creep.say(creep.memory.action);
+            } else if (repairTarget) {
+                creep.memory.action = 'repair';
                 creep.say(creep.memory.action);
             } else {
                 creep.memory.action = 'upgrade';
@@ -67,13 +74,17 @@ module.exports = {
             if (creep.build(buildTarget) === ERR_NOT_IN_RANGE) {
                 creep.moveTo(buildTarget, {visualizePathStyle: {stroke: '#ffffff'}});
             }
+        } else if (repairing) {
+            if (creep.repair(repairTarget) === ERR_NOT_IN_RANGE) {
+                creep.moveTo(repairTarget, {visualizePathStyle: {stroke: '#ffffff'}});
+            }
         } else if (renewing) {
             creep.moveTo(spawn, {visualizePathStyle: {stroke: '#ffffff'}});
             if (!creep.room.energyAvailable && creep.energy) {
                 creep.transfer(spawn, RESOURCE_ENERGY);
             }
         } else {
-            creep.say('help!');
+            creep.say('zzzz');
         }
     }
 };

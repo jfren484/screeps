@@ -36,8 +36,8 @@ Room.prototype.getRepairTargets = function () {
         filter: function (s) {
             return (s.structureType === STRUCTURE_WALL && s.hits < 50000)
                 || (s.structureType === STRUCTURE_RAMPART && s.hits < 50000)
-                || (s.structureType === STRUCTURE_ROAD && s.hits < 4500)
-                || (s.structureType === STRUCTURE_CONTAINER && s.hits < 240000)
+                || (s.structureType === STRUCTURE_ROAD && s.hits < s.hitsMax * 0.9)
+                || (s.structureType === STRUCTURE_CONTAINER && s.hits < s.hitsMax * 0.96)
                 || (s.structureType === STRUCTURE_TOWER && s.hits < s.hitsMax)
                 || (s.structureType === STRUCTURE_EXTENSION && s.hits < s.hitsMax)
                 || (s.structureType === STRUCTURE_STORAGE && s.hits < s.hitsMax);
@@ -108,7 +108,7 @@ Spawn.prototype.renewMyAdjacentCreeps = function () {
 Spawn.prototype.createCreepWithRole = function (roleName, creepName) {
     let creepRole = gameData.creepRoles[roleName];
 
-    return this.createCreep(creepRole.body, creepName, {role: roleName, createdOn: new Date()})
+    return this.createCreep(creepRole.body, creepName, {role: roleName, createdOn: new Date()});
 };
 
 Spawn.prototype.spawnNewCreeps = function () {
