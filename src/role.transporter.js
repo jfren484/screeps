@@ -64,7 +64,7 @@ module.exports = {
                             || s.structureType === STRUCTURE_STORAGE && s.storeCapacity - _.sum(s.store) >= creep.carry.energy
                             || (s.structureType === STRUCTURE_EXTENSION || s.structureType === STRUCTURE_TOWER)
                             && s.energyCapacity > s.energy
-                            || s.structureType === STRUCTURE_SPAWN && s.energyCapacity - s.energy > creep.carry.energy;
+                            || s.structureType === STRUCTURE_SPAWN && s.energyCapacity > s.energy;
                     }
                 });
 
