@@ -55,7 +55,10 @@ module.exports = {
             creep.memory.action = 'harvest';
             creep.say(creep.memory.action);
         } else if (harvesting && creep.carry.energy === creep.carryCapacity) {
-            if (buildTarget) {
+            if (transportTarget) {
+                creep.memory.action = 'transport';
+                creep.say(creep.memory.action);
+            } else if (buildTarget) {
                 creep.memory.action = 'build';
                 creep.say(creep.memory.action);
             } else if (repairTarget) {
@@ -88,11 +91,11 @@ module.exports = {
             }
         } else if (renewing) {
             creep.moveTo(spawn, { visualizePathStyle: { stroke: '#ffffff' } });
-            if (!creep.room.energyAvailable && creep.energy) {
+            if (creep.room.energyAvailable < 100 && creep.energy) {
                 creep.transfer(spawn, RESOURCE_ENERGY);
             }
         } else if (transporting) {
-            if (creep.transfer(transportTarget) === ERR_NOT_IN_RANGE) {
+            if (creep.transfer(transportTarget, RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
                 creep.moveTo(transportTarget, { visualizePathStyle: { stroke: '#ffffff' } });
             }
         } else {

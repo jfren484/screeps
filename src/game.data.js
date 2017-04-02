@@ -1,6 +1,6 @@
 let creepRoles = {
     'harvester': {
-        optimalCount: 2,
+        optimalCount: 3,
         body: [WORK, WORK, WORK, WORK, WORK, WORK, CARRY, MOVE, MOVE, MOVE]
     },
     'transporter': {

@@ -90,7 +90,7 @@ Room.prototype.stats = function () {
 Spawn.prototype.renewMyAdjacentCreeps = function () {
     let spawn = this;
 
-    if (spawn.energy >= 50) {
+    if (spawn.room.energyAvailable >= 50) {
         spawn.room
             .lookForAtArea(LOOK_CREEPS, spawn.pos.y - 1, spawn.pos.x - 1, spawn.pos.y + 1, spawn.pos.x + 1, true)
             .map(function (found) {
