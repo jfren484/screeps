@@ -34,8 +34,8 @@ Creep.prototype.takeUnoccupiedPost = function (postPosArray) {
 Room.prototype.getRepairTargets = function () {
     return this.find(FIND_STRUCTURES, {
         filter: function (s) {
-            return (s.structureType === STRUCTURE_WALL && s.hits < 75000)
-                || (s.structureType === STRUCTURE_RAMPART && s.hits < 75000)
+            return (s.structureType === STRUCTURE_WALL && s.hits < 100000)
+                || (s.structureType === STRUCTURE_RAMPART && s.hits < 100000)
                 || (s.structureType === STRUCTURE_ROAD && s.hits < s.hitsMax * 0.9)
                 || (s.structureType === STRUCTURE_CONTAINER && s.hits < s.hitsMax * 0.96)
                 || (s.structureType === STRUCTURE_TOWER && s.hits < s.hitsMax)
