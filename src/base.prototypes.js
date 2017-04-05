@@ -154,6 +154,16 @@ StructureContainer.prototype.availableCapacity = function () {
     return this.storeCapacity - _.sum(this.store);
 };
 
+Object.defineProperty(Structure.prototype, 'resourceLevel', {
+    get: function() {
+        if(this === Structure.prototype || this === undefined) return;
+
+        return this.__get_resourceLevel();
+    },
+    enumerable: true,
+    configurable: true
+});
+
 Object.defineProperty(Structure.prototype, 'resourceCapacity', {
     get: function() {
         if(this === Structure.prototype || this === undefined) return;
@@ -164,11 +174,27 @@ Object.defineProperty(Structure.prototype, 'resourceCapacity', {
     configurable: true
 });
 
+Object.defineProperty(Structure.prototype, 'availableResourceCapacity', {
+    get: function() {
+        if(this === Structure.prototype || this === undefined) return;
+
+        return this.__get_resourceCapacity() - this.__get_resourceLevel();
+    },
+    enumerable: true,
+    configurable: true
+});
+
 // Override in specific structure classes
+Structure.prototype.__get_resourceLevel = function () {
+    return 0;
+};
 Structure.prototype.__get_resourceCapacity = function () {
     return 0;
 };
 
+StructureStorage.prototype.__get_resourceLevel = function () {
+    return _.sum(this.store);
+};
 StructureStorage.prototype.__get_resourceCapacity = function () {
     return this.storeCapacity;
 };
