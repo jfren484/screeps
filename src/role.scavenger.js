@@ -35,9 +35,9 @@ module.exports = {
 
             let destination = creep.pos.findClosestByRange(FIND_STRUCTURES, {
                 filter: function (s) {
-                    return s.structureType === STRUCTURE_CONTAINER && s.availableCapacity() > _.sum(creep.carry) ||
-                        s.my && (s.structureType === STRUCTURE_STORAGE && s.capacity > _.sum(s.store) ||
-                        !carryingNonEnergy && s.structureType === STRUCTURE_SPAWN && s.energyCapacity - s.energy >= creep.carry.energy);
+                    return s.structureType === STRUCTURE_CONTAINER && s.availableResourceCapacity > _.sum(creep.carry) ||
+                        s.my && (s.structureType === STRUCTURE_STORAGE && s.availableResourceCapacity > 0 ||
+                        !carryingNonEnergy && s.structureType === STRUCTURE_SPAWN && s.availableResourceCapacity >= creep.carry.energy);
                 }
             });
 

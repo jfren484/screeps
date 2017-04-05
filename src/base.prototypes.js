@@ -150,10 +150,6 @@ Spawn.prototype.spawnNewCreeps = function () {
 
 /* Structure Resource Capacity */
 
-StructureContainer.prototype.availableCapacity = function () {
-    return this.storeCapacity - _.sum(this.store);
-};
-
 Object.defineProperty(Structure.prototype, 'resourceLevel', {
     get: function() {
         if(this === Structure.prototype || this === undefined) return;
@@ -192,9 +188,51 @@ Structure.prototype.__get_resourceCapacity = function () {
     return 0;
 };
 
+StructureContainer.prototype.__get_resourceLevel = function () {
+    return _.sum(this.store);
+};
+StructureContainer.prototype.__get_resourceCapacity = function () {
+    return this.storeCapacity;
+};
+
+StructureExtension.prototype.__get_resourceLevel = function () {
+    return this.energy;
+};
+StructureExtension.prototype.__get_resourceCapacity = function () {
+    return this.energyCapacity;
+};
+
+StructureLink.prototype.__get_resourceLevel = function () {
+    return this.energy;
+};
+StructureLink.prototype.__get_resourceCapacity = function () {
+    return this.energyCapacity;
+};
+
+StructureSpawn.prototype.__get_resourceLevel = function () {
+    return this.energy;
+};
+StructureSpawn.prototype.__get_resourceCapacity = function () {
+    return this.energyCapacity;
+};
+
 StructureStorage.prototype.__get_resourceLevel = function () {
     return _.sum(this.store);
 };
 StructureStorage.prototype.__get_resourceCapacity = function () {
     return this.storeCapacity;
+};
+
+StructureTerminal.prototype.__get_resourceLevel = function () {
+    return _.sum(this.store);
+};
+StructureTerminal.prototype.__get_resourceCapacity = function () {
+    return this.storeCapacity;
+};
+
+StructureTower.prototype.__get_resourceLevel = function () {
+    return this.energy;
+};
+StructureTower.prototype.__get_resourceCapacity = function () {
+    return this.energyCapacity;
 };

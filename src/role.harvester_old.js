@@ -19,7 +19,7 @@ module.exports = {
             if (creep.harvest(source) === ERR_NOT_IN_RANGE) {
                 creep.moveTo(source, {visualizePathStyle: {stroke: '#ffaa00'}});
             }
-        } else if (creep.id === '58cb62f78e5d48a81314151e' || creep.id === '58cb661a91b7951c047a1765' || target.availableCapacity() < creep.carry.energy) {
+        } else if (creep.id === '58cb62f78e5d48a81314151e' || creep.id === '58cb661a91b7951c047a1765' || target.availableResourceCapacity < creep.carry.energy) {
             let targets = creep.room.find(FIND_STRUCTURES, {
                 filter: (structure) => {
                     if ((structure.structureType === STRUCTURE_SPAWN

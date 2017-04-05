@@ -60,11 +60,10 @@ module.exports = {
             if (!target) {
                 let receivers = creep.room.find(FIND_STRUCTURES, {
                     filter: function (s) {
-                        return s.structureType === STRUCTURE_CONTAINER && s.availableCapacity() >= creep.carry.energy
-                            || s.structureType === STRUCTURE_STORAGE && s.storeCapacity - _.sum(s.store) >= creep.carry.energy
-                            || (s.structureType === STRUCTURE_EXTENSION || s.structureType === STRUCTURE_TOWER)
-                            && s.energyCapacity > s.energy
-                            || s.structureType === STRUCTURE_SPAWN && s.energyCapacity > s.energy;
+                        return s.structureType === STRUCTURE_CONTAINER && s.availableResourceCapacity >= creep.carry.energy
+                            || s.structureType === STRUCTURE_STORAGE && s.availableResourceCapacity >= creep.carry.energy
+                            || (s.structureType === STRUCTURE_EXTENSION || s.structureType === STRUCTURE_TOWER || s.structureType === STRUCTURE_SPAWN)
+                            && s.availableResourceCapacity > 0;
                     }
                 });
 

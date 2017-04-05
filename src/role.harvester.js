@@ -31,7 +31,7 @@ module.exports = {
 
                 if (creep.carry.energy) {
                     let target = creep.pos.findClosestByRange(FIND_STRUCTURES, {filter: function(s) {
-                        return s.structureType === STRUCTURE_CONTAINER && s.availableCapacity();
+                        return s.structureType === STRUCTURE_CONTAINER && s.availableResourceCapacity;
                     }});            
 
                     if (target) {
