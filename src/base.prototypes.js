@@ -1,6 +1,8 @@
 /// <reference path="../scripts/_references.js" />
 let gameData = require('game.data');
 
+/* Creep */
+
 Creep.prototype.getTarget = function () {
     let target = null;
 
@@ -30,6 +32,8 @@ Creep.prototype.takeUnoccupiedPost = function (postPosArray) {
 
     return ERR_NO_PATH;
 };
+
+/* Room */
 
 Room.prototype.getRepairTargets = function () {
     return this.find(FIND_STRUCTURES, {
@@ -87,6 +91,8 @@ Room.prototype.stats = function () {
     return `Creeps:\n${creepStats}\n\nRepairs:\n${repairStats}`;
 };
 
+/* Spawn */
+
 Spawn.prototype.renewMyAdjacentCreeps = function () {
     let spawn = this;
 
@@ -142,6 +148,27 @@ Spawn.prototype.spawnNewCreeps = function () {
     }
 };
 
+/* Structure Resource Capacity */
+
 StructureContainer.prototype.availableCapacity = function () {
     return this.storeCapacity - _.sum(this.store);
+};
+
+Object.defineProperty(Structure.prototype, 'resourceCapacity', {
+    get: function() {
+        if(this === Structure.prototype || this === undefined) return;
+
+        return this.__get_resourceCapacity();
+    },
+    enumerable: true,
+    configurable: true
+});
+
+// Override in specific structure classes
+Structure.prototype.__get_resourceCapacity = function () {
+    return 0;
+};
+
+StructureStorage.prototype.__get_resourceCapacity = function () {
+    return this.storeCapacity;
 };
