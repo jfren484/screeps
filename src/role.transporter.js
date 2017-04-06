@@ -58,7 +58,7 @@ module.exports = {
                 let resourceToWithdraw = RESOURCE_ENERGY;
                 if (target.resourceLevel > target.store.energy) {
                     // The store has some non-energy resources
-                    for (let resource in creep.carry) {
+                    for (let resource in target.store) {
                         if (resource !== resourceToWithdraw) {
                             // Found the first non-energy resource - withdraw that
                             resourceToWithdraw = resource;
@@ -70,7 +70,7 @@ module.exports = {
                 let result = creep.withdraw(target, resourceToWithdraw);
                 if (result === ERR_NOT_IN_RANGE) {
                     creep.moveTo(target, {visualizePathStyle: {stroke: '#ffaa00'}});
-                } else if (result === OK && !creep.availableResourceCapacity) {
+                } else if (result === OK && !creep.carryCapacity) {
                     creep.memory.collecting = false;
                 }
             } else {
@@ -79,34 +79,40 @@ module.exports = {
         }
 
         if (!creep.memory.collecting && (urgentNeeds.length || creep.carryLevel)) {
-            let receivers = urgentNeeds;
-            if (!receivers.length) {
-                receivers = creep.room.find(FIND_STRUCTURES, {
-                    filter: function (s) {
-                        return s.structureType === STRUCTURE_CONTAINER && s.availableResourceCapacity
-                            || s.structureType === STRUCTURE_STORAGE && s.availableResourceCapacity;
-                    }
-                });
+            if (creep.carryLevel > creep.carry.energy) {
+                target = creep.room.storage;
+            } else {
+                let receivers = urgentNeeds;
+                if (!receivers.length) {
+                    receivers = creep.room.find(FIND_STRUCTURES, {
+                        filter: function (s) {
+                            return s.structureType === STRUCTURE_CONTAINER && s.availableResourceCapacity
+                                || s.structureType === STRUCTURE_STORAGE && s.availableResourceCapacity;
+                        }
+                    });
+                }
+
+                if (receivers.length) {
+                    receivers = _.sortBy(receivers, function (s) {
+                        let sort = 0;
+
+                        if ((s.structureType === STRUCTURE_SPAWN || s.structureType === STRUCTURE_EXTENSION) && s.room.energyAvailable < 500) {
+                            sort = -1000;
+                        } else if (s.structureType === STRUCTURE_CONTAINER) {
+                            sort = s.store.energy < 1000 ? 50 : 1000;
+                        } else if (s.structureType === STRUCTURE_STORAGE) {
+                            // Any non-energy? If so, prioritize storage
+                            sort = creep.carryLevel > creep.carry.energy ? -2000 : 500;
+                        }
+
+                        return sort + creep.pos.getRangeTo(s);
+                    });
+
+                    target = receivers[0];
+                }
             }
 
-            if (receivers.length) {
-                receivers = _.sortBy(receivers, function (s) {
-                    let sort = 0;
-
-                    if ((s.structureType === STRUCTURE_SPAWN || s.structureType === STRUCTURE_EXTENSION) && s.room.energyAvailable < 500) {
-                        sort = -1000;
-                    } else if (s.structureType === STRUCTURE_CONTAINER) {
-                        sort = s.store.energy < 1000 ? 0 : 1000;
-                    } else if (s.structureType === STRUCTURE_STORAGE) {
-                        // Any non-energy? If so, prioritize storage
-                        sort = creep.carryLevel > creep.carry.energy ? -2000 : 500;
-                    }
-
-                    return sort + creep.pos.getRangeTo(s);
-                });
-
-                target = receivers[0];
-
+            if (target) {
                 if (creep.pos.isNearTo(target)) {
                     for (let resource in creep.carry) {
                         creep.transfer(target, resource);

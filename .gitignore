@@ -6,3 +6,4 @@ obj
 *.suo
 *.user
 bower_components
+node_modules/
