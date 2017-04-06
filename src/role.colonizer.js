@@ -1,4 +1,5 @@
 /// <reference path="../scripts/_references.js" />
+let gameData = require('game.data');
 
 function isColonizing(creep) {
     if (!creep.memory.colonizing) {
@@ -51,7 +52,7 @@ module.exports = {
             building && !buildTarget ||
             repairing && !repairTarget ||
             transporting && !transportTarget ||
-            renewing && (creep.ticksToLive >= 1450 || creep.room.energyAvailable < 50)) {
+            renewing && (creep.ticksToLive >= gameData.renewThreshold || creep.room.energyAvailable < 50)) {
             creep.memory.action = 'harvest';
             creep.say(creep.memory.action);
         } else if (harvesting && creep.carry.energy === creep.carryCapacity) {

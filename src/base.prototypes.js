@@ -33,6 +33,26 @@ Creep.prototype.takeUnoccupiedPost = function (postPosArray) {
     return ERR_NO_PATH;
 };
 
+Object.defineProperty(Creep.prototype, 'carryLevel', {
+    get: function() {
+        if(this === Creep.prototype || this === undefined) return;
+
+        return _.sum(this.carry);
+    },
+    enumerable: true,
+    configurable: true
+});
+
+Object.defineProperty(Creep.prototype, 'availableCarryCapacity', {
+    get: function() {
+        if(this === Creep.prototype || this === undefined) return;
+
+        return this.carryCapacity - this.carryLevel;
+    },
+    enumerable: true,
+    configurable: true
+});
+
 /* Room */
 
 Room.prototype.getRepairTargets = function () {
@@ -103,7 +123,7 @@ Spawn.prototype.renewMyAdjacentCreeps = function () {
                 return found.creep;
             })
             .filter(function (creep) {
-                return creep.my && creep.ticksToLive < 1450;
+                return creep.my && creep.ticksToLive < gameData.renewThreshold;
             })
             .forEach(function (creep) {
                 spawn.renewCreep(creep);

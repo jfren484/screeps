@@ -11,8 +11,12 @@ module.exports = {
             }
         } else {
             let claimPosition = Game.flags['Claim'];
+            if (!claimPosition) {
+                creep.say('Zzzz');
+                return;
+            }
 
-            if (claimPosition && creep.pos.getRangeTo(claimPosition) < 2) {
+            if (creep.pos.isNearTo(claimPosition)) {
                 creep.memory.isClaiming = true;
             }
 

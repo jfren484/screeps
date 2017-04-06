@@ -10,7 +10,7 @@ module.exports = {
         } else if (creep.memory.upgrading && creep.carry.energy === 0) {
             creep.memory.upgrading = false;
             creep.say('load');
-        } else if (creep.memory.renewing && (creep.ticksToLive >= 1450 || creep.room.energyAvailable < 50)) {
+        } else if (creep.memory.renewing && (creep.ticksToLive >= gameData.renewThreshold || creep.room.energyAvailable < 50)) {
             creep.memory.renewing = false;
             creep.say('load');
         } else if (!creep.memory.upgrading && !creep.memory.renewing && creep.carry.energy === creep.carryCapacity) {

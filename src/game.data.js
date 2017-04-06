@@ -57,5 +57,6 @@ let rooms = {
 
 module.exports = {
     creepRoles: creepRoles,
-    myRooms: rooms
+    myRooms: rooms,
+    renewThreshold: 1450
 };

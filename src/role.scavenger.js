@@ -12,18 +12,17 @@ function resume(creep, target) {
 module.exports = {
     run: function (creep) {
         let target = creep.pos.findClosestByRange(FIND_DROPPED_RESOURCES);
-        let creepLoad = _.sum(creep.carry);
 
         if (creep.memory.renewing) {
-            if (creep.ticksToLive >= 1450 || target) {
+            if (creep.ticksToLive >= gameData.renewThreshold || target) {
                 resume(creep, target);
             }
         } else if (creep.memory.isInPosition && !creep.spawning && creep.ticksToLive < 800) { // When spawning, apparently ticksToLive is 0
             creep.memory.renewing = true;
             creep.say('renew');
-        } else if (creep.memory.dispensing && !creepLoad) {
+        } else if (creep.memory.dispensing && !creep.carryLevel) {
             resume(creep, target);
-        } else if (!creep.memory.dispensing && (creepLoad === creep.carryCapacity || creepLoad && !target)) {
+        } else if (!creep.memory.dispensing && (creep.availableCarryCapacity === 0 || creep.carryLevel && !target)) {
             creep.memory.dispensing = true;
             creep.say('dispense');
         }
@@ -31,11 +30,11 @@ module.exports = {
         if (creep.memory.renewing) {
             creep.moveTo(Game.spawns['Spawn1']);
         } else if (creep.memory.dispensing) {
-            let carryingNonEnergy = creepLoad !== creep.carry.energy;
+            let carryingNonEnergy = creep.carryLevel !== creep.carry.energy;
 
             let destination = creep.pos.findClosestByRange(FIND_STRUCTURES, {
                 filter: function (s) {
-                    return s.structureType === STRUCTURE_CONTAINER && s.availableResourceCapacity > _.sum(creep.carry) ||
+                    return s.structureType === STRUCTURE_CONTAINER && s.availableResourceCapacity > creep.carryLevel ||
                         s.my && (s.structureType === STRUCTURE_STORAGE && s.availableResourceCapacity > 0 ||
                         !carryingNonEnergy && s.structureType === STRUCTURE_SPAWN && s.availableResourceCapacity >= creep.carry.energy);
                 }

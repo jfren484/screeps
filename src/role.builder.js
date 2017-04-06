@@ -1,4 +1,6 @@
 /// <reference path="../scripts/_references.js" />
+let gameData = require('game.data');
+
 module.exports = {
     run: function(creep) {
         let targets = creep.room.find(FIND_MY_CONSTRUCTION_SITES);
@@ -9,7 +11,7 @@ module.exports = {
             creep.memory.repairing = false;
             creep.memory.renewing = true;
             creep.say('renew');
-        } else if (creep.memory.renewing && (creep.ticksToLive >= 1450 || creep.room.energyAvailable < 50)) {
+        } else if (creep.memory.renewing && (creep.ticksToLive >= gameData.renewThreshold || creep.room.energyAvailable < 50)) {
             creep.memory.renewing = false;
             creep.say('load');
         } else if ((creep.memory.building || creep.memory.repairing) && creep.carry.energy === 0) {

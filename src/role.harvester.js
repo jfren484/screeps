@@ -8,7 +8,7 @@ module.exports = {
                 creep.moveTo(Game.spawns['Spawn1']);
             }
 
-            if (creep.ticksToLive >= 1450 || creep.room.energyAvailable < 50) {
+            if (creep.ticksToLive >= gameData.renewThreshold || creep.room.energyAvailable < 50) {
                 creep.memory.renewing = false;
                 creep.say('harvest');
             }

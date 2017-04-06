@@ -41,7 +41,7 @@ module.exports = {
                 creep.moveTo(Game.spawns['Spawn1']);
             }
 
-            if (creep.ticksToLive >= 1450) {
+            if (creep.ticksToLive >= gameData.renewThreshold) {
                 creep.memory.renewing = false;
                 creep.say('form up');
             }
