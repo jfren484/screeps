@@ -18,7 +18,7 @@ module.exports = {
         });
 
         if (creep.memory.collecting) {
-            if (!creep.carry.availableCarryCapacity) {
+            if (!creep.availableCarryCapacity) {
                 creep.memory.collecting = false;
                 creep.say('dispense');
             }
@@ -44,7 +44,7 @@ module.exports = {
 
             if (stores.length) {
                 stores = _.sortBy(stores, function (s) {
-                    let firstSort = s.structureType === STRUCTURE_CONTAINER && s.store.energy >= 1000
+                    let firstSort = s.structureType === STRUCTURE_CONTAINER && (s.store.energy >= 1000 || s.resourceLevel > s.store.energy)
                         ? -10000
                         : s.structureType === STRUCTURE_STORAGE
                             ? -5000
@@ -96,7 +96,7 @@ module.exports = {
                     if ((s.structureType === STRUCTURE_SPAWN || s.structureType === STRUCTURE_EXTENSION) && s.room.energyAvailable < 500) {
                         sort = -1000;
                     } else if (s.structureType === STRUCTURE_CONTAINER) {
-                        sort += s.store.energy < 1000 ? 0 : 1000;
+                        sort = s.store.energy < 1000 ? 0 : 1000;
                     } else if (s.structureType === STRUCTURE_STORAGE) {
                         // Any non-energy? If so, prioritize storage
                         sort = creep.carryLevel > creep.carry.energy ? -2000 : 500;
