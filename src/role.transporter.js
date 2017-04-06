@@ -96,8 +96,10 @@ module.exports = {
                     receivers = _.sortBy(receivers, function (s) {
                         let sort = 0;
 
-                        if ((s.structureType === STRUCTURE_SPAWN || s.structureType === STRUCTURE_EXTENSION) && s.room.energyAvailable < 500) {
-                            sort = -1000;
+                        if (s.structureType === STRUCTURE_SPAWN) {
+                            sort = s.room.energyAvailable < 500 ? -1000 : 20;
+                        } else if (s.structureType === STRUCTURE_EXTENSION) {
+                            sort = s.room.energyAvailable < 500 ? -1000 : 0;
                         } else if (s.structureType === STRUCTURE_CONTAINER) {
                             sort = s.store.energy < 1000 ? 50 : 1000;
                         } else if (s.structureType === STRUCTURE_STORAGE) {
