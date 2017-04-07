@@ -56,7 +56,7 @@ module.exports = {
                 target = stores[0];
 
                 let resourceToWithdraw = RESOURCE_ENERGY;
-                if (target.resourceLevel > target.store.energy) {
+                if (target.resourceLevel > target.store.energy && target.structureType === STRUCTURE_CONTAINER) {
                     // The store has some non-energy resources
                     for (let resource in target.store) {
                         if (resource !== resourceToWithdraw) {
