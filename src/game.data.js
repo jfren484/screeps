@@ -38,6 +38,70 @@ let creepRoles = {
     'recycler': {optimalCount: 0, body: []}
 };
 
+let roleData = {
+    'harvester': {
+        optimalCount: 2,
+        bodies: {
+            1: [WORK, WORK, CARRY, MOVE],
+            2: [WORK, WORK, WORK, WORK, CARRY, MOVE, MOVE],
+            3: [WORK, WORK, WORK, WORK, WORK, WORK, CARRY, MOVE, MOVE, MOVE]
+        }
+    },
+    'transporter': {
+        optimalCount: 2,
+        bodies: {
+            1: [CARRY, CARRY, CARRY, CARRY, MOVE, MOVE],
+            2: [CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE],
+            3: [CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE],
+            4: [CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY,
+                MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE]
+        }
+    },
+    'builder': {
+        optimalCount: 3,
+        bodies: {
+            1: [WORK, CARRY, CARRY, MOVE, MOVE],
+            2: [WORK, WORK, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE],
+            3: [WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE]
+        }
+    },
+    'upgrader': {
+        optimalCount: 2,
+        bodies: {
+            1: [WORK, WORK, CARRY, MOVE],
+            2: [WORK, WORK, WORK, WORK, CARRY, MOVE],
+            3: [WORK, WORK, WORK, WORK, WORK, CARRY, MOVE]
+        }
+    },
+    'scavenger': {
+        optimalCount: 1,
+        bodies: {
+            2: [CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE]
+        }
+    },
+    'sentry': {
+        bodies: {
+            2: [RANGED_ATTACK, RANGED_ATTACK, RANGED_ATTACK, MOVE, MOVE],
+            4: [RANGED_ATTACK, RANGED_ATTACK, RANGED_ATTACK, RANGED_ATTACK, RANGED_ATTACK, RANGED_ATTACK, MOVE, MOVE, MOVE]
+        }
+    },
+    'infantry': {
+        bodies: {
+            4: [TOUGH, TOUGH, ATTACK, ATTACK, ATTACK, ATTACK, ATTACK, ATTACK, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE]
+        }
+    },
+    'claimer': {
+        bodies: {0: [CLAIM, MOVE]}
+    },
+    'colonizer': {
+        bodies: {
+            3: [WORK, WORK, WORK, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE],
+            4: [WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE]
+        }
+    },
+    'recycler': {}
+};
+
 for (let roleName in creepRoles) {
     creepRoles[roleName].bodyCost = _.sum(creepRoles[roleName].body.map(function (p) {
         return BODYPART_COST[p];

@@ -24,9 +24,12 @@ Creep.prototype.takeUnoccupiedPost = function (postPosArray) {
         if (this.pos.x === post.x && this.pos.y === post.y) {
             this.memory.isInPosition = true;
             return OK;
-        } else if (!this.room.lookForAt(LOOK_CREEPS, post.x, post.y).length) {
-            this.moveTo(post.x, post.y, {visualizePathStyle: {stroke: '#5D80B2'}});
-            return OK;
+        } else {
+            let creepInPost = this.room.lookForAt(LOOK_CREEPS, post.x, post.y);
+            if (!creepInPost.length || creepInPost[0].memory.role !== this.memory.role) {
+                this.moveTo(post.x, post.y, {visualizePathStyle: {stroke: '#5D80B2'}});
+                return OK;
+            }
         }
     }
 
