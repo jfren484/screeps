@@ -44,21 +44,21 @@ function spawnNewCreeps(spawn) {
         const roleCreeps = _.filter(spawn.room.myCreeps, (creep) => creep.memory.role === roleName);
         const count = roleCreeps.length;
         const optimalCount = _.isFunction(gameData.creepRoles[roleName].optimalCount)
-            ? gameData.creepRoles[roleName].optimalCount(spawn.room, (gameData.myRooms[spawn.room.name][roleName] || {}).posts)
+            ? gameData.creepRoles[roleName].optimalCount(spawn.room, gameData.myRooms[spawn.room.name].posts[roleName])
             : gameData.creepRoles[roleName].optimalCount || 0;
 
         return {
             role: roleName,
             index: i++,
             creeps: roleCreeps,
-            creepsNeeded: optimalCount > count ? optimalCount - count : 0
+            creepsNeeded: optimalCount > count ? count - optimalCount : 0 // Make creepsNeeded negative for sorting
         };
     });
 
-    let creepsNeeded = _.filter(roomCreepCounts, (data) => data.creepsNeeded > 0);
+    let creepsNeeded = _.filter(roomCreepCounts, (data) => data.creepsNeeded !== 0);
 
     if (creepsNeeded.length) {
-        let topNeed = _.orderBy(creepsNeeded, ['creepsNeeded', 'index'], ['desc', 'asc'])[0];
+        let topNeed = _.sortBy(creepsNeeded, ['creepsNeeded', 'index'])[0];
 
         spawn.createCreepWithRole(topNeed.role, undefined);
     } else {

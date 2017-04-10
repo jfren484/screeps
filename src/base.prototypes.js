@@ -204,7 +204,8 @@ Spawn.prototype.createCreepWithRole_old = function (roleName, creepName) {
 Spawn.prototype.createCreepWithRole = function (roleName, creepName) {
     const creepRole = gameData.creepRoles[roleName];
 
-    for (let level = this.room.energyLevel; level > 0 && !creepRole.bodies[level]; --level) {
+    let level;
+    for (level = this.room.energyLevel; level > 0 && !creepRole.bodies[level]; --level) {
         // Do nothing - all logic is in "for" statements.
     }
     const creepBody = creepRole.bodies[level];

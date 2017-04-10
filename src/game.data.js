@@ -54,7 +54,7 @@ let creepRoles = {
             return room.sources.length;
         },
         bodies: {
-            1: [CARRY, CARRY, CARRY, CARRY, MOVE, MOVE],
+            1: [CARRY, CARRY, CARRY, MOVE, MOVE, MOVE],
             2: [CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE],
             3: [CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE],
             4: [CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY,
@@ -85,7 +85,7 @@ let creepRoles = {
     },
     'scavenger': {
         optimalCount: function (room, posts) {
-            return posts.length;
+            return posts.length && room.energyLevel >= 2;
         },
         bodies: {
             2: [CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE],
@@ -94,7 +94,7 @@ let creepRoles = {
     },
     'sentry': {
         optimalCount: function (room, posts) {
-            return posts.length;
+            return posts.length && room.energyLevel >= 2;
         },
         bodies: {
             2: [RANGED_ATTACK, RANGED_ATTACK, RANGED_ATTACK, MOVE, MOVE],
