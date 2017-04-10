@@ -90,6 +90,16 @@ Room.prototype.getRepairTargets = function () {
     });
 };
 
+Object.defineProperty(Room.prototype, 'myCreeps', {
+    get: function () {
+        if (this === Room.prototype || this === undefined) return;
+
+        return _.filter(Game.creeps, (creep) => creep.room.name === this.name);
+    },
+    enumerable: true,
+    configurable: true
+});
+
 Room.prototype.stats = function () {
     const width = 20;
 
@@ -97,7 +107,7 @@ Room.prototype.stats = function () {
         .keys(gameData.creepRoles)
         .sort()
         .map(function (roleName) {
-            let creeps = _.filter(Game.creeps, (c) => c.memory.role === roleName);
+            let creeps = _.filter(this.myCreeps, (c) => c.memory.role === roleName);
             let count = creeps.length;
             let names = creeps.map(function (c) {
                 return c.name;

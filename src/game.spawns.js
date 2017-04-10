@@ -19,7 +19,7 @@ function renewMyAdjacentCreeps(spawn) {
 function spawnNewCreeps(spawn) {
     for (let roleName in gameData.creepRoles) {
         let creepRole = gameData.creepRoles[roleName];
-        let creeps = _.filter(Game.creeps, (creep) => creep.memory.role === roleName);
+        let creeps = _.filter(spawn.room.myCreeps, (creep) => creep.memory.role === roleName);
 
         if (creeps.length >= creepRole.optimalCount) {
             continue;
@@ -27,7 +27,7 @@ function spawnNewCreeps(spawn) {
 
         let result = spawn.canCreateCreep(creepRole.body);
         if (result === OK) {
-            let newName = spawn.createCreepWithRole(roleName, undefined);
+            //let newName = spawn.createCreepWithRole(roleName, undefined);
 
             console.log(`Spawning new ${roleName}: ${newName}`);
         } else if (result !== ERR_NOT_ENOUGH_ENERGY) {
