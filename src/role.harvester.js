@@ -13,7 +13,7 @@ module.exports = {
                 creep.say('harvest');
             }
         } else if (!creep.memory.isInPosition) {
-            creep.takeUnoccupiedPost(gameData.myRooms[creep.room.name].harvesterPosts);
+            creep.takeUnoccupiedPost(gameData.myRooms[creep.room.name].posts.harvester);
         } else {
             let source = creep.pos.findClosestByRange(FIND_SOURCES);
             

@@ -23,7 +23,7 @@ module.exports = {
             if (creep.memory.isInPosition) {
                 creep.upgradeController(creep.room.controller);
             } else {
-                creep.takeUnoccupiedPost(gameData.myRooms[creep.room.name].upgraderPosts);
+                creep.takeUnoccupiedPost(gameData.myRooms[creep.room.name].posts.upgrader);
             }
         } else if (creep.memory.renewing) {
             creep.moveTo(Game.spawns['Spawn1']);
@@ -31,25 +31,17 @@ module.exports = {
                 creep.transfer(Game.spawns['Spawn1'], RESOURCE_ENERGY);
             }
         } else {
-            let containers = _.filter(creep.room.lookForAt(LOOK_STRUCTURES, gameData.myRooms[creep.room.name].upgraderContainerPosition.x, gameData.myRooms[creep.room.name].upgraderContainerPosition.y),
-                (s) => s.structureType === STRUCTURE_CONTAINER && s.store[RESOURCE_ENERGY] > 0);
-            
-            if (!containers.length) {
-                containers = _.sortBy(creep.room.find(FIND_STRUCTURES, {filter: function(s) {
-                    return s.structureType === STRUCTURE_CONTAINER && s.store[RESOURCE_ENERGY] > 0;
-                }}), function(c) {
-                    return creep.pos.getRangeTo(c);
-                });
-            }
-            
+            let containers = creep.room.find(FIND_STRUCTURES, {filter: function(s) {
+                return s.structureType === STRUCTURE_CONTAINER && s.store.energy > 0;
+            }});
+
             if (containers.length) {
-                if (creep.withdraw(containers[0], RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
-                    creep.moveTo(containers[0], {visualizePathStyle: {stroke: '#ffaa00'}});
-                }
-            } else {
-                let source = creep.pos.findClosestByRange(FIND_SOURCES_ACTIVE);
-                if (creep.harvest(source) === ERR_NOT_IN_RANGE) {
-                    creep.moveTo(source, {visualizePathStyle: {stroke: '#ffaa00'}});
+                let container = _.sortBy(containers, function(c) {
+                    return creep.pos.getRangeTo(c);
+                })[0];
+
+                if (creep.withdraw(container, RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
+                    creep.moveTo(container, {visualizePathStyle: {stroke: '#ffaa00'}});
                 }
             }
         }

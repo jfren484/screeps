@@ -46,12 +46,12 @@ module.exports = {
                 creep.say('form up');
             }
         } else if (!creep.memory.isInPosition) {
-            if (gameData.myRooms[creep.room.name] && gameData.myRooms[creep.room.name].soldierPosts) {
-                creep.takeUnoccupiedPost(gameData.myRooms[creep.room.name].soldierPosts);
+            if (gameData.myRooms[creep.room.name] && gameData.myRooms[creep.room.name].posts.infantry) {
+                creep.takeUnoccupiedPost(gameData.myRooms[creep.room.name].posts.infantry);
             } else {
                 creep.moveTo(Game.flags['Home']);
             }
-            creep.takeUnoccupiedPost(gameData.myRooms[creep.room.name].soldierPosts);
+            creep.takeUnoccupiedPost(gameData.myRooms[creep.room.name].posts.infantry);
         } else if (creep.ticksToLive < 200) {
             creep.memory.isInPosition = false;
             creep.memory.renewing = true;

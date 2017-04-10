@@ -116,59 +116,10 @@ Room.prototype.stats = function () {
 
 /* Spawn */
 
-Spawn.prototype.renewMyAdjacentCreeps = function () {
-    let spawn = this;
-
-    if (spawn.room.energyAvailable >= 50) {
-        spawn.room
-            .lookForAtArea(LOOK_CREEPS, spawn.pos.y - 1, spawn.pos.x - 1, spawn.pos.y + 1, spawn.pos.x + 1, true)
-            .map(function (found) {
-                return found.creep;
-            })
-            .filter(function (creep) {
-                return creep.my && creep.ticksToLive < gameData.renewThreshold;
-            })
-            .forEach(function (creep) {
-                spawn.renewCreep(creep);
-            });
-    }
-};
-
 Spawn.prototype.createCreepWithRole = function (roleName, creepName) {
     let creepRole = gameData.creepRoles[roleName];
 
     return this.createCreep(creepRole.body, creepName, {role: roleName, createdOn: new Date()});
-};
-
-Spawn.prototype.spawnNewCreeps = function () {
-    let spawn = this;
-
-    if (spawn.spawning) {
-        let role = Game.creeps[spawn.spawning.name].memory.role;
-        spawn.room.visual.text(`Spawning ${role}`, spawn.pos.x + 1, spawn.pos.y, {align: 'left', opacity: 0.8});
-
-        return;
-    }
-
-    for (let roleName in gameData.creepRoles) {
-        let creepRole = gameData.creepRoles[roleName];
-        let creeps = _.filter(Game.creeps, (creep) => creep.memory.role === roleName);
-
-        if (creeps.length >= creepRole.optimalCount) {
-            continue;
-        }
-
-        let result = spawn.canCreateCreep(creepRole.body);
-        if (result === OK) {
-            let newName = spawn.createCreepWithRole(roleName, undefined);
-
-            console.log(`Spawning new ${roleName}: ${newName}`);
-        } else if (result !== ERR_NOT_ENOUGH_ENERGY) {
-            console.log(new Date() + ': canCreateCreep returned ' + result + ' for creep role ' + roleName);
-        }
-
-        return;
-    }
 };
 
 /* Structure Resource Capacity */

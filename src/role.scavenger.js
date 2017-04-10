@@ -54,7 +54,7 @@ module.exports = {
                 creep.moveTo(target, {visualizePathStyle: {stroke: '#ffffff'}});
             }
         } else if (!creep.memory.isInPosition) {
-            creep.takeUnoccupiedPost(gameData.myRooms[creep.room.name].scavengerPosts);
+            creep.takeUnoccupiedPost(gameData.myRooms[creep.room.name].posts.scavenger);
         }
     }
 };

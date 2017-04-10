@@ -1,5 +1,4 @@
 /// <reference path="../scripts/_references.js" />
-let roleHarvesterOld = require('role.harvester_old');
 let gameData = require('game.data');
 
 let roleModules = {};
@@ -19,9 +18,7 @@ module.exports = {
         for (let name in Game.creeps) {
             let creep = Game.creeps[name];
 
-            if (creep.memory.role === 'harvester' && creep.getActiveBodyparts(WORK) < 3) {
-                roleHarvesterOld.run(creep);
-            } else if (roleModules[creep.memory.role]) {
+            if (roleModules[creep.memory.role]) {
                 roleModules[creep.memory.role].run(creep);
             } else {
                 console.log('Unknown role: ' + creep.memory.role);
