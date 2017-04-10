@@ -97,12 +97,12 @@ Object.defineProperty(Room.prototype, 'energyLevel', {
         if (this._energyLevel === undefined) {
             const translation = [0, 300, 550, 800, 1300, 1800, 2300, 5600, 12900];
 
-            for (let level = 1; this.energyCapacityAvailable >= translation[level] && level <= translation.length; ++level) {
+            for (this._energyLevel = 1; this.energyCapacityAvailable >= translation[this._energyLevel] && this._energyLevel <= translation.length; ++this._energyLevel) {
                 // Do nothing - all logic is in for statements.
             }
 
             // For loop always goes 1 level too far - roll back 1.
-            this._energyLevel = level - 1;
+            --this._energyLevel;
         }
 
         return this._energyLevel;
