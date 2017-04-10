@@ -77,9 +77,9 @@ module.exports = {
                 creep.memory.building = true;
             }
         } else if (creep.memory.renewing) {
-            creep.moveTo(Game.spawns['Spawn1']);
+            creep.moveTo(creep.spawn);
             if (!creep.room.energyAvailable && creep.energy) {
-                creep.transfer(Game.spawns['Spawn1'], RESOURCE_ENERGY);
+                creep.transfer(creep.spawn, RESOURCE_ENERGY);
             }
         } else {
             let container = creep.pos.findClosestByRange(FIND_STRUCTURES, {filter: function(s) {

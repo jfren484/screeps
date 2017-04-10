@@ -26,9 +26,9 @@ module.exports = {
                 creep.takeUnoccupiedPost(gameData.myRooms[creep.room.name].posts.upgrader);
             }
         } else if (creep.memory.renewing) {
-            creep.moveTo(Game.spawns['Spawn1']);
+            creep.moveTo(creep.spawn);
             if (!creep.room.energyAvailable && creep.energy) {
-                creep.transfer(Game.spawns['Spawn1'], RESOURCE_ENERGY);
+                creep.transfer(creep.spawn, RESOURCE_ENERGY);
             }
         } else {
             let containers = creep.room.find(FIND_STRUCTURES, {filter: function(s) {

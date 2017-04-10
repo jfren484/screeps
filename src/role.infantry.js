@@ -37,8 +37,8 @@ module.exports = {
             creep.memory.isInPosition = false;
             creep.memory.renewing = true;
         } else if (creep.memory.renewing) {
-            if (Game.spawns['Spawn1'].renewCreep(creep) === ERR_NOT_IN_RANGE) {
-                creep.moveTo(Game.spawns['Spawn1']);
+            if (creep.spawn.renewCreep(creep) === ERR_NOT_IN_RANGE) {
+                creep.moveTo(creep.spawn);
             }
 
             if (creep.ticksToLive >= gameData.renewThreshold) {

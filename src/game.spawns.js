@@ -45,7 +45,7 @@ module.exports = {
 
             renewMyAdjacentCreeps(spawn);
 
-            if (spawnName === 'Spawn1') {
+            if (spawn.room.name === 'W84S61') {
                 if (spawn.spawning) {
                     let role = Game.creeps[spawn.spawning.name].memory.role;
                     spawn.room.visual.text(`Spawning ${role}`, spawn.pos.x + 1, spawn.pos.y, {align: 'left', opacity: 0.8});

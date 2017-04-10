@@ -28,7 +28,7 @@ module.exports = {
         }
 
         if (creep.memory.renewing) {
-            creep.moveTo(Game.spawns['Spawn1']);
+            creep.moveTo(creep.spawn);
         } else if (creep.memory.dispensing) {
             let carryingNonEnergy = creep.carryLevel !== creep.carry.energy;
 
