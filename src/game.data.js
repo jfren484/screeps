@@ -1,4 +1,4 @@
-let creepRoles = {
+let creepRoles0 = {
     'harvester': {
         optimalCount: 2,
         body: [WORK, WORK, WORK, WORK, WORK, WORK, CARRY, MOVE, MOVE, MOVE]
@@ -38,21 +38,11 @@ let creepRoles = {
     'recycler': {optimalCount: 0, body: []}
 };
 
-/*
- Energy Max:
- 1: 300
- 2: 550 - 5 ext
- 3: 800 - 10 ext
- 4: 1300 - 20 ext
- 5: 1800 - 30 ext
- 6: 2300 - 40 ext
- 7: 5600 - 50 ext (100), 2 spawns
- 8: 12900 - 60 ext (200), 3 spawns
- */
-
-let roleData = {
+let creepRoles = {
     'harvester': {
-        optimalCount: 2,
+        optimalCount: function (room, posts) {
+            return posts.length;
+        },
         bodies: {
             1: [WORK, WORK, CARRY, MOVE],
             2: [WORK, WORK, WORK, WORK, CARRY, MOVE, MOVE],
@@ -60,7 +50,9 @@ let roleData = {
         }
     },
     'transporter': {
-        optimalCount: 2,
+        optimalCount: function (room) {
+            return room.sources.length;
+        },
         bodies: {
             1: [CARRY, CARRY, CARRY, CARRY, MOVE, MOVE],
             2: [CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE],
@@ -70,7 +62,9 @@ let roleData = {
         }
     },
     'builder': {
-        optimalCount: 2,
+        optimalCount: function (room) {
+            return room.sources.length;
+        },
         bodies: {
             1: [WORK, CARRY, CARRY, MOVE, MOVE],
             2: [WORK, WORK, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE],
@@ -80,7 +74,9 @@ let roleData = {
         }
     },
     'upgrader': {
-        optimalCount: 2,
+        optimalCount: function (room, posts) {
+            return posts.length;
+        },
         bodies: {
             1: [WORK, WORK, CARRY, MOVE],
             2: [WORK, WORK, WORK, WORK, CARRY, MOVE],
@@ -88,13 +84,18 @@ let roleData = {
         }
     },
     'scavenger': {
-        optimalCount: 1,
+        optimalCount: function (room, posts) {
+            return posts.length;
+        },
         bodies: {
             2: [CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE],
             4: [CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE]
         }
     },
     'sentry': {
+        optimalCount: function (room, posts) {
+            return posts.length;
+        },
         bodies: {
             2: [RANGED_ATTACK, RANGED_ATTACK, RANGED_ATTACK, MOVE, MOVE],
             4: [RANGED_ATTACK, RANGED_ATTACK, RANGED_ATTACK, RANGED_ATTACK, RANGED_ATTACK, RANGED_ATTACK, MOVE, MOVE, MOVE]
@@ -117,17 +118,29 @@ let roleData = {
     'recycler': {}
 };
 
-// for (let roleName in creepRoles) {
-//     creepRoles[roleName].bodyCost = _.sum(creepRoles[roleName].body.map(function (p) {
-//         return BODYPART_COST[p];
-//     }));
-// }
-
 let rooms = {
+    'W82S61': {
+        posts: {
+            'harvester': [{x: 39, y: 16}],
+            'scavenger': [{x: 24, y: 22}],
+            'sentry': [],
+            'infantry': [],
+            'upgrader': [{x: 36, y: 27}, {x: 36, y: 28}]
+        }
+    },
+    'W83S61': {
+        posts: {
+            'harvester': [{x: 12, y: 20}, {x: 41, y: 7}],
+            'scavenger': [{x: 22, y: 15}],
+            'sentry': [],
+            'infantry': [],
+            'upgrader': [{x: 29, y: 21}, {x: 30, y: 20}]
+        }
+    },
     'W84S61': {
         posts: {
             'harvester': [{x: 30, y: 16}, {x: 13, y: 26}],
-            'scavenger': [{x: 23, y: 21}, {x: 31, y: 10}],
+            'scavenger': [{x: 23, y: 21}],
             'sentry': [{x: 23, y: 19}, {x: 29, y: 8}],
             'infantry': [{x: 27, y: 12}, {x: 28, y: 12}, {x: 29, y: 12}, {x: 30, y: 12}, {x: 31, y: 12}],
             'upgrader': [{x: 11, y: 27}, {x: 13, y: 27}, {x: 12, y: 27}]

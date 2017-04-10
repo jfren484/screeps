@@ -195,10 +195,35 @@ Room.prototype.stats = function () {
 
 /* Spawn */
 
-Spawn.prototype.createCreepWithRole = function (roleName, creepName) {
+Spawn.prototype.createCreepWithRole_old = function (roleName, creepName) {
     let creepRole = gameData.creepRoles[roleName];
 
     return this.createCreep(creepRole.body, creepName, {role: roleName, createdOn: new Date()});
+};
+
+Spawn.prototype.createCreepWithRole = function (roleName, creepName) {
+    const creepRole = gameData.creepRoles[roleName];
+
+    for (let level = this.room.energyLevel; level > 0 && !creepRole.bodies[level]; --level) {
+        // Do nothing - all logic is in "for" statements.
+    }
+    const creepBody = creepRole.bodies[level];
+
+    if (!creepBody) {
+        console.log(`Can't find body definition for ${roleName} in level ${this.room.energyLevel} room ${this.room.name}`);
+        return;
+    }
+
+    let result = this.canCreateCreep(creepBody);
+    if (result === OK) {
+        let newName = this.createCreep(creepBody, creepName, {role: roleName, createdOn: new Date()});
+
+        console.log(`Spawning new ${roleName} in ${this.room.name}: ${newName}`);
+
+        return newName;
+    } else if (result !== ERR_NOT_ENOUGH_ENERGY) {
+        console.log(new Date() + ': canCreateCreep returned ' + result + ' for creep role ' + roleName);
+    }
 };
 
 /* Structure Resource Capacity */

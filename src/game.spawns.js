@@ -16,7 +16,7 @@ function renewMyAdjacentCreeps(spawn) {
     }
 }
 
-function spawnNewCreeps(spawn) {
+function spawnNewCreeps_old(spawn) {
     for (let roleName in gameData.creepRoles) {
         let creepRole = gameData.creepRoles[roleName];
         let creeps = _.filter(spawn.room.myCreeps, (creep) => creep.memory.role === roleName);
@@ -27,7 +27,7 @@ function spawnNewCreeps(spawn) {
 
         let result = spawn.canCreateCreep(creepRole.body);
         if (result === OK) {
-            let newName = spawn.createCreepWithRole(roleName, undefined);
+            let newName = spawn.createCreepWithRole_old(roleName, undefined);
 
             console.log(`Spawning new ${roleName}: ${newName}`);
         } else if (result !== ERR_NOT_ENOUGH_ENERGY) {
@@ -38,6 +38,34 @@ function spawnNewCreeps(spawn) {
     }
 }
 
+function spawnNewCreeps(spawn) {
+    let i = 0;
+    let roomCreepCounts = _.map(gameData.creepRoles, function (roleData, roleName) {
+        const roleCreeps = _.filter(spawn.room.myCreeps, (creep) => creep.memory.role === roleName);
+        const count = roleCreeps.length;
+        const optimalCount = _.isFunction(gameData.creepRoles[roleName].optimalCount)
+            ? gameData.creepRoles[roleName].optimalCount(spawn.room, (gameData.myRooms[spawn.room.name][roleName] || {}).posts)
+            : gameData.creepRoles[roleName].optimalCount || 0;
+
+        return {
+            role: roleName,
+            index: i++,
+            creeps: roleCreeps,
+            creepsNeeded: optimalCount > count ? optimalCount - count : 0
+        };
+    });
+
+    let creepsNeeded = _.filter(roomCreepCounts, (data) => data.creepsNeeded > 0);
+
+    if (creepsNeeded.length) {
+        let topNeed = _.orderBy(creepsNeeded, ['creepsNeeded', 'index'], ['desc', 'asc'])[0];
+
+        spawn.createCreepWithRole(topNeed.role, undefined);
+    } else {
+        // TODO: any need to be recycled?
+    }
+}
+
 module.exports = {
     run: function () {
         for (let spawnName in Game.spawns) {
@@ -45,14 +73,10 @@ module.exports = {
 
             renewMyAdjacentCreeps(spawn);
 
-            if (spawn.room.name === 'W84S61') {
-                if (spawn.spawning) {
-                    let role = Game.creeps[spawn.spawning.name].memory.role;
-                    spawn.room.visual.text(`Spawning ${role}`, spawn.pos.x + 1, spawn.pos.y, {align: 'left', opacity: 0.8});
-
-                    return;
-                }
-
+            if (spawn.spawning) {
+                let role = Game.creeps[spawn.spawning.name].memory.role;
+                spawn.room.visual.text(`Spawning ${role}`, spawn.pos.x + 1, spawn.pos.y, {align: 'left', opacity: 0.8});
+            } else {
                 spawnNewCreeps(spawn);
             }
         }
