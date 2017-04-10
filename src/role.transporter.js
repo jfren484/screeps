@@ -11,7 +11,7 @@ module.exports = {
 
         let urgentNeeds = creep.room.find(FIND_STRUCTURES, {
             filter: function (s) {
-                return s.structureType === STRUCTURE_CONTAINER && s.store.energy < 1000
+                return s.structureType === STRUCTURE_CONTAINER && s.store.energy < 500
                     || (s.structureType === STRUCTURE_EXTENSION || s.structureType === STRUCTURE_TOWER || s.structureType === STRUCTURE_SPAWN)
                     && s.availableResourceCapacity > 0;
             }
@@ -44,7 +44,7 @@ module.exports = {
 
             if (stores.length) {
                 stores = _.sortBy(stores, function (s) {
-                    let firstSort = s.structureType === STRUCTURE_CONTAINER && (s.store.energy >= 1000 || s.resourceLevel > s.store.energy)
+                    let firstSort = s.structureType === STRUCTURE_CONTAINER && (s.store.energy >= 1200 || s.resourceLevel > s.store.energy)
                         ? -10000
                         : s.structureType === STRUCTURE_STORAGE
                             ? -5000
