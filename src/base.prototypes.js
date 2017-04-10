@@ -102,12 +102,13 @@ Object.defineProperty(Room.prototype, 'myCreeps', {
 
 Room.prototype.stats = function () {
     const width = 20;
+    const room = this;
 
     let creepStats = Object
         .keys(gameData.creepRoles)
         .sort()
         .map(function (roleName) {
-            let creeps = _.filter(this.myCreeps, (c) => c.memory.role === roleName);
+            let creeps = _.filter(room.myCreeps, (c) => c.memory.role === roleName);
             let count = creeps.length;
             let names = creeps.map(function (c) {
                 return c.name;

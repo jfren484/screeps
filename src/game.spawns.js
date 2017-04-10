@@ -27,7 +27,7 @@ function spawnNewCreeps(spawn) {
 
         let result = spawn.canCreateCreep(creepRole.body);
         if (result === OK) {
-            //let newName = spawn.createCreepWithRole(roleName, undefined);
+            let newName = spawn.createCreepWithRole(roleName, undefined);
 
             console.log(`Spawning new ${roleName}: ${newName}`);
         } else if (result !== ERR_NOT_ENOUGH_ENERGY) {
