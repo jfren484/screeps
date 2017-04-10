@@ -96,6 +96,17 @@ Object.defineProperty(Room.prototype, 'energyLevel', {
 
         if (this._energyLevel === undefined) {
             const translation = [0, 300, 550, 800, 1300, 1800, 2300, 5600, 12900];
+            /*
+             Energy Max:
+             1: 300
+             2: 550 - 5 ext
+             3: 800 - 10 ext
+             4: 1300 - 20 ext
+             5: 1800 - 30 ext
+             6: 2300 - 40 ext
+             7: 5600 - 50 ext (100), 2 spawns
+             8: 12900 - 60 ext (200), 3 spawns
+             */
 
             for (this._energyLevel = 1; this.energyCapacityAvailable >= translation[this._energyLevel] && this._energyLevel <= translation.length; ++this._energyLevel) {
                 // Do nothing - all logic is in for statements.
@@ -117,7 +128,25 @@ Object.defineProperty(Room.prototype, 'myCreeps', {
 
         return _.filter(Game.creeps, (creep) => creep.room.name === this.name);
     },
-    enumerable: true,
+    enumerable: false,
+    configurable: true
+});
+
+Object.defineProperty(Room.prototype, 'sources', {
+    get: function () {
+        if (this === Room.prototype || this === undefined) return;
+
+        if (!this._sources) {
+            if (!this.memory.sourceIds) {
+                this.memory.sourceIds = this.find(FIND_SOURCES).map(source => source.id);
+            }
+
+            this._sources = this.memory.sourceIds.map(id => Game.getObjectById(id));
+        }
+
+        return this._sources;
+    },
+    enumerable: false,
     configurable: true
 });
 
