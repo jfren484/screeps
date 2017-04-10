@@ -3,6 +3,26 @@ let gameData = require('game.data');
 
 /* Creep */
 
+Object.defineProperty(Creep.prototype, 'availableCarryCapacity', {
+    get: function () {
+        if (this === Creep.prototype || this === undefined) return;
+
+        return this.carryCapacity - this.carryLevel;
+    },
+    enumerable: true,
+    configurable: true
+});
+
+Object.defineProperty(Creep.prototype, 'carryLevel', {
+    get: function () {
+        if (this === Creep.prototype || this === undefined) return;
+
+        return _.sum(this.carry);
+    },
+    enumerable: true,
+    configurable: true
+});
+
 Creep.prototype.getTarget = function () {
     let target = null;
 
@@ -16,6 +36,24 @@ Creep.prototype.getTarget = function () {
 
     return target;
 };
+
+Object.defineProperty(Creep.prototype, 'spawn', {
+    get: function () {
+        if (this === Creep.prototype || this === undefined) return;
+
+        if (this._spawn === undefined) {
+            if (this.memory.spawnId === undefined) {
+                this.memory.spawnId = (this.pos.findClosestByRange(FIND_MY_SPAWNS) || {id: null}).id;
+            }
+
+            this._spawn = Game.getObjectById(this.memory.spawnId);
+        }
+
+        return this._spawn;
+    },
+    enumerable: false,
+    configurable: true
+});
 
 Creep.prototype.takeUnoccupiedPost = function (postPosArray) {
     for (let i = 0; i < postPosArray.length; ++i) {
@@ -35,26 +73,6 @@ Creep.prototype.takeUnoccupiedPost = function (postPosArray) {
 
     return ERR_NO_PATH;
 };
-
-Object.defineProperty(Creep.prototype, 'carryLevel', {
-    get: function() {
-        if(this === Creep.prototype || this === undefined) return;
-
-        return _.sum(this.carry);
-    },
-    enumerable: true,
-    configurable: true
-});
-
-Object.defineProperty(Creep.prototype, 'availableCarryCapacity', {
-    get: function() {
-        if(this === Creep.prototype || this === undefined) return;
-
-        return this.carryCapacity - this.carryLevel;
-    },
-    enumerable: true,
-    configurable: true
-});
 
 /* Room */
 
@@ -100,15 +118,15 @@ Room.prototype.stats = function () {
     }
 
     let repairStats = Object
-        .keys(repairs)
-        .sort()
-        .map(function (structureType) {
-            let count = repairs[structureType].length;
+            .keys(repairs)
+            .sort()
+            .map(function (structureType) {
+                let count = repairs[structureType].length;
 
-            let pad = ' '.repeat(width - structureType.length);
-            return structureType.charAt(0).toUpperCase() + structureType.slice(1) + ':' + pad + count;
-        })
-        .join('\n')
+                let pad = ' '.repeat(width - structureType.length);
+                return structureType.charAt(0).toUpperCase() + structureType.slice(1) + ':' + pad + count;
+            })
+            .join('\n')
         || 'None';
 
     return `Creeps:\n${creepStats}\n\nRepairs:\n${repairStats}`;
@@ -125,8 +143,8 @@ Spawn.prototype.createCreepWithRole = function (roleName, creepName) {
 /* Structure Resource Capacity */
 
 Object.defineProperty(Structure.prototype, 'resourceLevel', {
-    get: function() {
-        if(this === Structure.prototype || this === undefined) return;
+    get: function () {
+        if (this === Structure.prototype || this === undefined) return;
 
         return this.__get_resourceLevel();
     },
@@ -135,8 +153,8 @@ Object.defineProperty(Structure.prototype, 'resourceLevel', {
 });
 
 Object.defineProperty(Structure.prototype, 'resourceCapacity', {
-    get: function() {
-        if(this === Structure.prototype || this === undefined) return;
+    get: function () {
+        if (this === Structure.prototype || this === undefined) return;
 
         return this.__get_resourceCapacity();
     },
@@ -145,8 +163,8 @@ Object.defineProperty(Structure.prototype, 'resourceCapacity', {
 });
 
 Object.defineProperty(Structure.prototype, 'availableResourceCapacity', {
-    get: function() {
-        if(this === Structure.prototype || this === undefined) return;
+    get: function () {
+        if (this === Structure.prototype || this === undefined) return;
 
         return this.__get_resourceCapacity() - this.__get_resourceLevel();
     },
