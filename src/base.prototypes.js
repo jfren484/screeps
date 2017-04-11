@@ -195,12 +195,6 @@ Room.prototype.stats = function () {
 
 /* Spawn */
 
-Spawn.prototype.createCreepWithRole_old = function (roleName, creepName) {
-    let creepRole = gameData.creepRoles[roleName];
-
-    return this.createCreep(creepRole.body, creepName, {role: roleName, createdOn: new Date()});
-};
-
 Spawn.prototype.createCreepWithRole = function (roleName, creepName) {
     const creepRole = gameData.creepRoles[roleName];
 

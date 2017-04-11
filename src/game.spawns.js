@@ -16,28 +16,6 @@ function renewMyAdjacentCreeps(spawn) {
     }
 }
 
-function spawnNewCreeps_old(spawn) {
-    for (let roleName in gameData.creepRoles) {
-        let creepRole = gameData.creepRoles[roleName];
-        let creeps = _.filter(spawn.room.myCreeps, (creep) => creep.memory.role === roleName);
-
-        if (creeps.length >= creepRole.optimalCount) {
-            continue;
-        }
-
-        let result = spawn.canCreateCreep(creepRole.body);
-        if (result === OK) {
-            let newName = spawn.createCreepWithRole_old(roleName, undefined);
-
-            console.log(`Spawning new ${roleName}: ${newName}`);
-        } else if (result !== ERR_NOT_ENOUGH_ENERGY) {
-            console.log(new Date() + ': canCreateCreep returned ' + result + ' for creep role ' + roleName);
-        }
-
-        return;
-    }
-}
-
 function spawnNewCreeps(spawn) {
     let i = 0;
     let roomCreepCounts = _.map(gameData.creepRoles, function (roleData, roleName) {
