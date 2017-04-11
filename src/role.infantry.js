@@ -3,7 +3,7 @@ let gameData = require('game.data');
 
 module.exports = {
     run: function (creep) {
-        let attackPosition = Game.flags['Attack Position'];
+        let attackPosition = Game.flags['Attack'];
 
         if (creep.memory.isMovingToAttack && attackPosition && creep.pos.getRangeTo(attackPosition) < 2) {
             creep.memory.isMovingToAttack = false;
