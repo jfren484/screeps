@@ -83,9 +83,9 @@ let rooms = {
         posts: {
             'harvester': [{x: 39, y: 16}],
             'scavenger': [{x: 24, y: 22}],
-            'sentry': [],
-            'infantry': [],
-            'upgrader': [{x: 36, y: 27}, {x: 36, y: 28}]
+            'sentry': [{x: 40, y: 9}],
+            'infantry': [{x: 32, y: 14}, {x: 32, y: 15}],
+            'upgrader': [{x: 36, y: 27}]
         }
     },
     'W83S61': {
@@ -93,7 +93,7 @@ let rooms = {
             'harvester': [{x: 12, y: 20}, {x: 41, y: 7}],
             'scavenger': [{x: 22, y: 15}],
             'sentry': [],
-            'infantry': [],
+            'infantry': [{x: 28, y: 15}, {x: 23, y: 18}],
             'upgrader': [{x: 29, y: 21}, {x: 30, y: 20}]
         }
     },
