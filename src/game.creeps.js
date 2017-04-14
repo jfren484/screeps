@@ -20,7 +20,7 @@ module.exports = {
 
             if (roleModules[creep.memory.role]) {
                 roleModules[creep.memory.role].run(creep);
-            } else {
+            } else if (creep.memory.role) {
                 console.log('Unknown role: ' + creep.memory.role);
             }
         }

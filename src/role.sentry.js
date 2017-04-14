@@ -1,31 +1,23 @@
 /// <reference path="../scripts/_references.js" />
 let gameData = require('game.data');
+let renewer = require('role.renewer');
 
 module.exports = {
-    run: function(creep) {
-        if (creep.memory.renewing) {
-            if (creep.spawn.renewCreep(creep) === ERR_NOT_IN_RANGE) {
-                creep.moveTo(creep.spawn);
-            }
+    run: function (creep) {
+        const nearbyHostileCreeps = creep.pos.findInRange(FIND_HOSTILE_CREEPS, 3);
 
-            if (creep.ticksToLive >= gameData.renewThreshold) {
-                creep.memory.renewing = false;
-                creep.say('defend');
-            }
-        } else if (creep.memory.isInPosition) {
-            let nearbyHostileCreeps = creep.pos.findInRange(FIND_HOSTILE_CREEPS, 3);
-                                           
+        if (renewer.renewCheck(creep,
+                (creep) => creep.ticksToLive < 500 && !nearbyHostileCreeps.length,
+                (creep) => creep.memory.action = gameData.constants.ACTION_DEFENDING)) {
+            return;
+        }
+
+        if (creep.takeUnoccupiedPost() === gameData.constants.RESULT_AT_POST) {
             if (nearbyHostileCreeps.length === 1) {
                 creep.rangedAttack(nearbyHostileCreeps[0]);
             } else if (nearbyHostileCreeps.length > 1) {
                 creep.rangedMassAttack();
-            } else if (creep.ticksToLive < 500) {
-                creep.memory.isInPosition = false;
-                creep.memory.renewing = true;
-                creep.say('renew');
             }
-        } else {
-            creep.takeUnoccupiedPost(gameData.myRooms[creep.room.name].posts.sentry);
         }
     }
 };

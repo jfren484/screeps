@@ -1,31 +1,17 @@
 module.exports = {
-    run: function(creep) {
-        if (!creep.memory.resigned) {
-            creep.memory.targetId = null;
-            creep.memory.resigned = true;
-            creep.say('bye!');
-        }
-        
-        let spawn = creep.getTarget();
-
-        if (!spawn) {
-            spawn = creep.pos.findClosestByRange(FIND_MY_SPAWNS);
-            if (spawn) {
-                creep.targetId = spawn.id;
-            }
-        }
-
-        if (!spawn) {
+    run: function (creep) {
+        if (!creep.spawn) {
             return;
         }
 
-        let result = spawn.recycleCreep(creep);
-        
-        if (result === ERR_NOT_IN_RANGE) {
-            creep.moveTo(spawn);
+        if (!creep.pos.isNearTo(creep.spawn)) {
+            creep.moveTo(creep.spawn);
         } else if (creep.carry.energy) {
-            creep.transfer(spawn, RESOURCE_ENERGY);
+            creep.transfer(creep.spawn, RESOURCE_ENERGY);
             creep.drop(RESOURCE_ENERGY);
+        } else {
+            creep.say('bye!');
+            creep.spawn.recycleCreep(creep);
         }
     }
 };

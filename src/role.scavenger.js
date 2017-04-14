@@ -1,35 +1,39 @@
 /// <reference path="../scripts/_references.js" />
 let gameData = require('game.data');
-
-function resume(creep, target) {
-    creep.memory.dispensing = false;
-    creep.memory.renewing = false;
-    creep.memory.isInPosition = false;
-
-    creep.say(target ? 'scavenge' : 'post');
-}
+let renewer = require('role.renewer');
 
 module.exports = {
     run: function (creep) {
-        let target = creep.pos.findClosestByRange(FIND_DROPPED_RESOURCES);
-
-        if (creep.memory.renewing) {
-            if (creep.ticksToLive >= gameData.renewThreshold || target) {
-                resume(creep, target);
+        const target = creep.pos.findClosestByRange(FIND_DROPPED_RESOURCES, {
+            filter: function (r) {
+                return r.amount >= r.pos.getRangeTo(creep) && !r.pos.findInRange(FIND_HOSTILE_CREEPS, 3).length;
             }
-        } else if (creep.memory.isInPosition && !creep.spawning && creep.ticksToLive < 800) { // When spawning, apparently ticksToLive is 0
-            creep.memory.renewing = true;
-            creep.say('renew');
-        } else if (creep.memory.dispensing && !creep.carryLevel) {
-            resume(creep, target);
-        } else if (!creep.memory.dispensing && (creep.availableCarryCapacity === 0 || creep.carryLevel && !target)) {
-            creep.memory.dispensing = true;
-            creep.say('dispense');
+        });
+
+        if (renewer.renewCheck(creep,
+                function (creep) {
+                    if (creep.ticksToLive < gameData.renewThresholds.defaultRenew) {
+                        return true;
+                    }
+
+                    return creep.ticksToLive > 750 && !target;
+                },
+                function (creep) {
+                    creep.memory.action = gameData.constants.ACTION_LOADING;
+                })
+        ) {
+            return;
         }
 
-        if (creep.memory.renewing) {
-            creep.moveTo(creep.spawn);
-        } else if (creep.memory.dispensing) {
+        if (creep.is(gameData.constants.ACTION_DISPENSING) && !creep.carryLevel) {
+            creep.memory.action = gameData.constants.ACTION_LOADING;
+            creep.say(creep.memory.action);
+        } else if (!creep.is(gameData.constants.ACTION_DISPENSING) && (creep.availableCarryCapacity === 0 || creep.carryLevel && !target)) {
+            creep.memory.action = gameData.constants.ACTION_DISPENSING;
+            creep.say(creep.memory.action);
+        }
+
+        if (creep.is(gameData.constants.ACTION_DISPENSING)) {
             let carryingNonEnergy = creep.carryLevel !== creep.carry.energy;
 
             let destination = creep.pos.findClosestByRange(FIND_STRUCTURES, {
@@ -48,13 +52,11 @@ module.exports = {
                 creep.moveTo(destination, {visualizePathStyle: {stroke: '#ffffff'}});
             }
         } else if (target) {
-            creep.memory.isInPosition = false;
-
             if (creep.pickup(target) === ERR_NOT_IN_RANGE) {
                 creep.moveTo(target, {visualizePathStyle: {stroke: '#ffffff'}});
             }
-        } else if (!creep.memory.isInPosition) {
-            creep.takeUnoccupiedPost(gameData.myRooms[creep.room.name].posts.scavenger);
+        } else {
+            creep.takeUnoccupiedPost();
         }
     }
 };

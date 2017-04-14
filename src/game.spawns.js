@@ -8,7 +8,7 @@ function renewMyAdjacentCreeps(spawn) {
                 return found.creep;
             })
             .filter(function (creep) {
-                return creep.my && creep.ticksToLive < gameData.renewThreshold;
+                return creep.my && creep.ticksToLive < gameData.renewThresholds.complete && creep.memory.role !== 'recycler';
             })
             .forEach(function (creep) {
                 spawn.renewCreep(creep);
@@ -38,6 +38,7 @@ function spawnNewCreeps(spawn) {
     if (creepsNeeded.length) {
         let topNeed = _.sortBy(creepsNeeded, ['creepsNeeded', 'index'])[0];
 
+        // TODO: naming convention
         spawn.createCreepWithRole(topNeed.role, undefined);
     } else {
         // TODO: any need to be recycled?

@@ -37,6 +37,10 @@ Creep.prototype.getTarget = function () {
     return target;
 };
 
+Creep.prototype.is = function(...actions) {
+    return actions.indexOf(this.memory.action) >= 0;
+};
+
 Object.defineProperty(Creep.prototype, 'spawn', {
     get: function () {
         if (this === Creep.prototype || this === undefined) return;
@@ -55,19 +59,26 @@ Object.defineProperty(Creep.prototype, 'spawn', {
     configurable: true
 });
 
-Creep.prototype.takeUnoccupiedPost = function (postPosArray) {
+Creep.prototype.takeUnoccupiedPost = function () {
+    const creep = this;
+    const postPosArray = (gameData.myRooms[creep.room.name] || {posts:{}}).posts[creep.memory.role] || [];
+
+    if (!postPosArray.length) {
+        console.log(`Creep ${creep.name} cannot take post - no posts defined for room ${creep.room.name}.`);
+        return ERR_NOT_FOUND;
+    }
+
+    if (postPosArray.some((post) => creep.pos.x === post.x && creep.pos.y === post.y)) {
+        return gameData.constants.RESULT_AT_POST;
+    }
+
     for (let i = 0; i < postPosArray.length; ++i) {
         let post = postPosArray[i];
 
-        if (this.pos.x === post.x && this.pos.y === post.y) {
-            this.memory.isInPosition = true;
-            return OK;
-        } else {
-            let creepInPost = this.room.lookForAt(LOOK_CREEPS, post.x, post.y);
-            if (!creepInPost.length || creepInPost[0].memory.role !== this.memory.role) {
-                this.moveTo(post.x, post.y, {visualizePathStyle: {stroke: '#5D80B2'}});
-                return OK;
-            }
+        let creepInPost = creep.room.lookForAt(LOOK_CREEPS, post.x, post.y);
+        if (!creepInPost.length || creepInPost[0].memory.role !== creep.memory.role) {
+            creep.moveTo(post.x, post.y, {visualizePathStyle: {stroke: '#5D80B2'}});
+            return gameData.constants.RESULT_MOVED;
         }
     }
 
