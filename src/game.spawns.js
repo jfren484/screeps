@@ -1,3 +1,4 @@
+/// <reference path="../scripts/_references.js" />
 let gameData = require('game.data');
 
 function renewMyAdjacentCreeps(spawn) {
@@ -19,7 +20,7 @@ function renewMyAdjacentCreeps(spawn) {
 function spawnNewCreeps(spawn) {
     let i = 0;
     let roomCreepCounts = _.map(gameData.creepRoles, function (roleData, roleName) {
-        const roleCreeps = _.filter(spawn.room.myCreeps, (creep) => creep.memory.role === roleName);
+        const roleCreeps = _.filter(spawn.room.myCreeps, (creep) => creep.memory.role === roleName || creep.memory.originalRole === roleName);
         const count = roleCreeps.length;
         const optimalCount = _.isFunction(gameData.creepRoles[roleName].optimalCount)
             ? gameData.creepRoles[roleName].optimalCount(spawn.room, gameData.myRooms[spawn.room.name].posts[roleName])
