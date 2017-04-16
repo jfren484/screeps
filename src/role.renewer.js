@@ -36,7 +36,7 @@ module.exports = {
         }
 
         if (creep.ticksToLive > gameData.renewThresholds.complete || creep.room.energyAvailable < gameData.renewThresholds.lowEnergyAbort ||
-            gameData.creepRoles[creep.originalRole].isRenewComplete && gameData.creepRoles[creep.originalRole].isRenewComplete(creep)) {
+            gameData.creepRoles[creep.memory.originalRole].isRenewComplete && gameData.creepRoles[creep.memory.originalRole].isRenewComplete(creep)) {
             creep.say(creep.memory.action);
             creep.memory.role = creep.memory.originalRole;
         }

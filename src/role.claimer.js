@@ -1,4 +1,6 @@
 /// <reference path="../scripts/_references.js" />
+let gameData = require('game.data');
+
 module.exports = {
     run: function (creep) {
         if (!creep.is(gameData.constants.ACTION_TRAVELING) && creep.memory.destinationFlag) {
@@ -31,7 +33,7 @@ module.exports = {
                     creep.say('claimed');
                 }
             } else {
-                console.log(`Claimer ${creep.name} is trying to claim room ${creep.room.name}, but there is no controller present.`)
+                console.log(`Claimer ${creep.name} is trying to claim room ${creep.room.name}, but there is no controller present.`);
             }
         }
     }

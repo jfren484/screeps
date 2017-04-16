@@ -4,7 +4,7 @@ let renewer = require('role.renewer');
 
 module.exports = {
     run: function (creep) {
-        if (renewer.renewCheck(creep, null, (creep) => creep.memory.action = gameData.constants.ACTION_LOADING)) {
+        if (renewer.renewCheck(creep, null, (c) => c.memory.action = gameData.constants.ACTION_LOADING)) {
             return;
         }
 

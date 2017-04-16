@@ -7,8 +7,8 @@ module.exports = {
         const nearbyHostileCreeps = creep.pos.findInRange(FIND_HOSTILE_CREEPS, 3);
 
         if (renewer.renewCheck(creep,
-                (creep) => creep.ticksToLive < 500 && !nearbyHostileCreeps.length,
-                (creep) => creep.memory.action = gameData.constants.ACTION_DEFENDING)) {
+                (c) => c.ticksToLive < 500 && !nearbyHostileCreeps.length,
+                (c) => c.memory.action = gameData.constants.ACTION_DEFENDING)) {
             return;
         }
 

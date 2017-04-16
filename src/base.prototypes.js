@@ -5,7 +5,7 @@ let gameData = require('game.data');
 
 Object.defineProperty(Creep.prototype, 'availableCarryCapacity', {
     get: function () {
-        if (this === Creep.prototype || this === undefined) return;
+        if (this === Creep.prototype || this === undefined) return undefined;
 
         return this.carryCapacity - this.carryLevel;
     },
@@ -15,7 +15,7 @@ Object.defineProperty(Creep.prototype, 'availableCarryCapacity', {
 
 Object.defineProperty(Creep.prototype, 'carryLevel', {
     get: function () {
-        if (this === Creep.prototype || this === undefined) return;
+        if (this === Creep.prototype || this === undefined) return undefined;
 
         return _.sum(this.carry);
     },
@@ -43,7 +43,7 @@ Creep.prototype.is = function(...actions) {
 
 Object.defineProperty(Creep.prototype, 'spawn', {
     get: function () {
-        if (this === Creep.prototype || this === undefined) return;
+        if (this === Creep.prototype || this === undefined) return undefined;
 
         if (this._spawn === undefined) {
             if (this.memory.spawnId === undefined) {
@@ -103,7 +103,7 @@ Room.prototype.getRepairTargets = function () {
 
 Object.defineProperty(Room.prototype, 'energyLevel', {
     get: function () {
-        if (this === Room.prototype || this === undefined) return;
+        if (this === Room.prototype || this === undefined) return undefined;
 
         if (this._energyLevel === undefined) {
             const translation = [0, 300, 550, 800, 1300, 1800, 2300, 5600, 12900];
@@ -135,7 +135,7 @@ Object.defineProperty(Room.prototype, 'energyLevel', {
 
 Object.defineProperty(Room.prototype, 'myCreeps', {
     get: function () {
-        if (this === Room.prototype || this === undefined) return;
+        if (this === Room.prototype || this === undefined) return undefined;
 
         return _.filter(Game.creeps, (creep) => creep.room.name === this.name);
     },
@@ -145,7 +145,7 @@ Object.defineProperty(Room.prototype, 'myCreeps', {
 
 Object.defineProperty(Room.prototype, 'sources', {
     get: function () {
-        if (this === Room.prototype || this === undefined) return;
+        if (this === Room.prototype || this === undefined) return undefined;
 
         if (!this._sources) {
             if (!this.memory.sourceIds) {
@@ -217,7 +217,7 @@ Spawn.prototype.createCreepWithRole = function (roleName, creepName) {
 
     if (!creepBody) {
         console.log(`Can't find body definition for ${roleName} in level ${this.room.energyLevel} room ${this.room.name}`);
-        return;
+        return undefined;
     }
 
     let result = this.canCreateCreep(creepBody);
@@ -236,7 +236,7 @@ Spawn.prototype.createCreepWithRole = function (roleName, creepName) {
 
 Object.defineProperty(Structure.prototype, 'resourceLevel', {
     get: function () {
-        if (this === Structure.prototype || this === undefined) return;
+        if (this === Structure.prototype || this === undefined) return undefined;
 
         return this.__get_resourceLevel();
     },
@@ -246,7 +246,7 @@ Object.defineProperty(Structure.prototype, 'resourceLevel', {
 
 Object.defineProperty(Structure.prototype, 'resourceCapacity', {
     get: function () {
-        if (this === Structure.prototype || this === undefined) return;
+        if (this === Structure.prototype || this === undefined) return undefined;
 
         return this.__get_resourceCapacity();
     },
@@ -256,7 +256,7 @@ Object.defineProperty(Structure.prototype, 'resourceCapacity', {
 
 Object.defineProperty(Structure.prototype, 'availableResourceCapacity', {
     get: function () {
-        if (this === Structure.prototype || this === undefined) return;
+        if (this === Structure.prototype || this === undefined) return undefined;
 
         return this.__get_resourceCapacity() - this.__get_resourceLevel();
     },

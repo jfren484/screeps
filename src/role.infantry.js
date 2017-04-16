@@ -4,12 +4,12 @@ let renewer = require('role.renewer');
 
 module.exports = {
     run: function (creep) {
-        if (renewer.renewCheck(creep, null, (creep) => creep.memory.action = gameData.constants.ACTION_ATTACKING)) {
+        if (renewer.renewCheck(creep, null, (c) => c.memory.action = gameData.constants.ACTION_ATTACKING)) {
             return;
         }
 
         if (!creep.is(gameData.constants.ACTION_TRAVELING) && creep.memory.destinationFlag) {
-            renewer.renew(creep, (creep) => creep.memory.action = gameData.constants.ACTION_TRAVELING);
+            renewer.renew(creep, (c) => c.memory.action = gameData.constants.ACTION_TRAVELING);
         }
 
         // TODO: Make traveler its own role

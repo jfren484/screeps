@@ -11,15 +11,15 @@ module.exports = {
         });
 
         if (renewer.renewCheck(creep,
-                function (creep) {
-                    if (creep.ticksToLive < gameData.renewThresholds.defaultRenew) {
+                function (c) {
+                    if (c.ticksToLive < gameData.renewThresholds.defaultRenew) {
                         return true;
                     }
 
                     return creep.ticksToLive > 750 && !target;
                 },
-                function (creep) {
-                    creep.memory.action = gameData.constants.ACTION_LOADING;
+                function (c) {
+                    c.memory.action = gameData.constants.ACTION_LOADING;
                 })
         ) {
             return;

@@ -67,7 +67,7 @@ const creepRoles = {
     },
     'scavenger': {
         optimalCount: function (room, posts) {
-            return posts.length && room.energyLevel >= 2;
+            return room.energyLevel >= 2 ? posts.length : 0;
         },
         bodies: {
             2: [CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE],
@@ -79,7 +79,7 @@ const creepRoles = {
     },
     'sentry': {
         optimalCount: function (room, posts) {
-            return posts.length && room.energyLevel >= 2;
+            return room.energyLevel >= 2 ? posts.length : 0;
         },
         bodies: {
             2: [RANGED_ATTACK, RANGED_ATTACK, RANGED_ATTACK, MOVE, MOVE],
@@ -100,7 +100,8 @@ const creepRoles = {
             4: [WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE]
         }
     },
-    'recycler': {}
+    'recycler': {},
+    'renewer': {}
 };
 
 const rooms = {
