@@ -1,18 +1,32 @@
 /// <reference path="../scripts/_references.js" />
 let gameData = require('game.data');
+let renewer = require('role.renewer');
 
 module.exports = {
     run: function (creep) {
-        let attackPosition = Game.flags['Attack'];
-
-        if (creep.memory.isMovingToAttack && attackPosition && creep.pos.getRangeTo(attackPosition) < 2) {
-            creep.memory.isMovingToAttack = false;
-            creep.memory.isAttacking = true;
+        if (renewer.renewCheck(creep, null, (creep) => creep.memory.action = gameData.constants.ACTION_ATTACKING)) {
+            return;
         }
 
-        if (creep.memory.isMovingToAttack && !creep.memory.renewing) {
-            creep.moveTo(attackPosition);
-        } else if (creep.memory.isAttacking) {
+        if (!creep.is(gameData.constants.ACTION_TRAVELING) && creep.memory.destinationFlag) {
+            renewer.renew(creep, (creep) => creep.memory.action = gameData.constants.ACTION_TRAVELING);
+        }
+
+        // TODO: Make traveler its own role
+        if (creep.is(gameData.constants.ACTION_TRAVELING)) {
+            const destinationFlag = Game.flags[creep.memory.destinationFlag];
+
+            if (creep.pos.isNearTo(destinationFlag)) {
+                creep.memory.destinationFlag = null;
+                creep.memory.action = gameData.constants.ACTION_ATTACKING;
+                creep.say(creep.memory.action);
+            } else {
+                creep.moveTo(destinationFlag);
+            }
+        }
+
+        if (creep.is(gameData.constants.ACTION_ATTACKING)) {
+            // TODO: handle targets behind walls, etc.
             let target = creep.pos.findClosestByRange(FIND_HOSTILE_CREEPS)
                 || creep.pos.findClosestByRange(FIND_STRUCTURES, {
                     filter: function (s) {
@@ -30,32 +44,8 @@ module.exports = {
                     creep.moveTo(target);
                 }
             } else {
-                creep.moveTo(attackPosition);
+                creep.takeUnoccupiedPost();
             }
-        } else if (!creep.memory.isMovingToAttack && attackPosition && attackPosition.roomName !== creep.room.name) {
-            creep.memory.isMovingToAttack = true;
-            creep.memory.isInPosition = false;
-            creep.memory.renewing = true;
-        } else if (creep.memory.renewing) {
-            if (creep.spawn.renewCreep(creep) === ERR_NOT_IN_RANGE) {
-                creep.moveTo(creep.spawn);
-            }
-
-            if (creep.ticksToLive >= gameData.renewThreshold) {
-                creep.memory.renewing = false;
-                creep.say('form up');
-            }
-        } else if (!creep.memory.isInPosition) {
-            if (gameData.myRooms[creep.room.name] && gameData.myRooms[creep.room.name].posts.infantry) {
-                creep.takeUnoccupiedPost(gameData.myRooms[creep.room.name].posts.infantry);
-            } else {
-                creep.moveTo(Game.flags['Home']);
-            }
-            creep.takeUnoccupiedPost(gameData.myRooms[creep.room.name].posts.infantry);
-        } else if (creep.ticksToLive < 200) {
-            creep.memory.isInPosition = false;
-            creep.memory.renewing = true;
-            creep.say('renew');
         }
     }
 };

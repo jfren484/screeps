@@ -1,6 +1,12 @@
 /// <reference path="../scripts/_references.js" />
+let renewer = require('role.renewer');
+
 module.exports = {
     run: function (creep) {
+        if (renewer.renewCheck(creep, null, (creep) => creep.memory.action = gameData.constants.ACTION_LOADING)) {
+            return;
+        }
+
         let target;
 
         let containersNeedingReduction = creep.room.find(FIND_STRUCTURES, {
@@ -17,12 +23,10 @@ module.exports = {
             }
         });
 
-        if (creep.memory.collecting) {
-            if (!creep.availableCarryCapacity) {
-                creep.memory.collecting = false;
-                creep.say('dispense');
-            }
-        } else if (!creep.carryLevel) {
+        if (!creep.availableCarryCapacity && creep.is(gameData.constants.ACTION_LOADING)) {
+            creep.memory.action = gameData.constants.ACTION_DISPENSING;
+            creep.say(creep.memory.action);
+        } else if (!creep.carryLevel && creep.is(gameData.constants.ACTION_LOADING)) {
             if (containersNeedingReduction.length || urgentNeeds.length) {
                 creep.memory.collecting = true;
                 creep.say('collect');
@@ -31,7 +35,7 @@ module.exports = {
             }
         }
 
-        if (creep.memory.collecting) {
+        if (creep.is(gameData.constants.ACTION_LOADING)) {
             let stores = containersNeedingReduction;
 
             if (!stores.length) {
@@ -70,15 +74,19 @@ module.exports = {
                 let result = creep.withdraw(target, resourceToWithdraw);
                 if (result === ERR_NOT_IN_RANGE) {
                     creep.moveTo(target, {visualizePathStyle: {stroke: '#ffaa00'}});
-                } else if (result === OK && !creep.carryCapacity) {
-                    creep.memory.collecting = false;
+                }
+
+                if (!creep.carryCapacity) {
+                    creep.memory.action = gameData.constants.ACTION_DISPENSING;
+                    creep.say(creep.memory.action);
                 }
             } else {
-                creep.memory.collecting = false;
+                creep.memory.action = creep.carryLevel ? gameData.constants.ACTION_DISPENSING : gameData.constants.ACTION_WAITING;
+                creep.say(creep.memory.action);
             }
         }
 
-        if (!creep.memory.collecting && (urgentNeeds.length || creep.carryLevel)) {
+        if (creep.is(gameData.constants.ACTION_DISPENSING) && (urgentNeeds.length || creep.carryLevel)) {
             if (creep.carryLevel > creep.carry.energy) {
                 target = creep.room.storage;
             } else {

@@ -1,64 +1,53 @@
 /// <reference path="../scripts/_references.js" />
 let gameData = require('game.data');
+let renewer = require('role.renewer');
 
 module.exports = {
-    run: function(creep) {
-        let targets = creep.room.find(FIND_MY_CONSTRUCTION_SITES);
-        let target;
+    run: function (creep) {
+        if (renewer.renewCheck(creep, null, (creep) => creep.memory.action = gameData.constants.ACTION_LOADING)) {
+            return;
+        }
 
-        if (!creep.memory.renewing && !creep.spawning && creep.ticksToLive < 200) { // When spawning, apparently ticksToLive is 0
-            creep.memory.building = false;
-            creep.memory.repairing = false;
-            creep.memory.renewing = true;
-            creep.say('renew');
-        } else if (creep.memory.renewing && (creep.ticksToLive >= gameData.renewThreshold || creep.room.energyAvailable < 50)) {
-            creep.memory.renewing = false;
-            creep.say('load');
-        } else if ((creep.memory.building || creep.memory.repairing) && creep.carry.energy === 0) {
-            creep.memory.building = false;
-            creep.memory.repairing = false;
-            creep.say('load');
-        } else if (!creep.memory.building && !creep.memory.repairing && creep.carry.energy === creep.carryCapacity) {
-            if (targets.length) {
-                creep.memory.building = true;
-                creep.say('build');
+        if (creep.is(gameData.constants.ACTION_BUILDING, gameData.constants.ACTION_REPAIRING) && !creep.carry.energy) {
+            creep.memory.action = gameData.constants.ACTION_LOADING;
+            creep.say(creep.memory.action);
+        }
+
+        if (creep.is(gameData.constants.ACTION_BUILDING)) {
+            const buildTargets = creep.room.find(FIND_MY_CONSTRUCTION_SITES);
+
+            if (!buildTargets.length) {
+                creep.memory.action = gameData.constants.ACTION_REPAIRING;
+                creep.say(creep.memory.action);
             } else {
-                creep.memory.repairing = true;
-                creep.say('repair');
+                let priorityTargets = _.filter(buildTargets, (s) => s.structureType === STRUCTURE_EXTENSION);
+                if (!priorityTargets.length) {
+                    priorityTargets = _.filter(buildTargets, (s) => s.structureType === STRUCTURE_ROAD);
+                }
+                if (!priorityTargets.length) {
+                    priorityTargets = _.filter(buildTargets, (s) => s.structureType === STRUCTURE_CONTAINER);
+                }
+                if (!priorityTargets.length) {
+                    priorityTargets = buildTargets;
+                }
+
+                if (priorityTargets.length > 1) {
+                    priorityTargets = _.sortBy(priorityTargets, [function (t) {
+                        return creep.pos.getRangeTo(t);
+                    }]);
+                }
+
+                if (creep.build(priorityTargets[0]) === ERR_NOT_IN_RANGE) {
+                    creep.moveTo(priorityTargets[0], {visualizePathStyle: {stroke: '#ffffff'}});
+                }
             }
         }
 
-        if (creep.memory.building) {
-            if (targets.length) {
-                let priorityTargets = _.filter(targets, (s) => s.structureType === STRUCTURE_EXTENSION);
-                if (!priorityTargets.length) {
-                    priorityTargets = _.filter(targets, (s) => s.structureType === STRUCTURE_ROAD);
-                }
-                if (!priorityTargets.length) {
-                    priorityTargets = _.filter(targets, (s) => s.structureType === STRUCTURE_CONTAINER);
-                }
-                if (!priorityTargets.length) {
-                    priorityTargets = targets;
-                }
-                
-                if (priorityTargets.length > 1) {
-                    priorityTargets = _.sortBy(priorityTargets, [function(t) { return creep.pos.getRangeTo(t); }]);
-                }
-                
-                target = priorityTargets[0];
-                
-                if (creep.build(target) === ERR_NOT_IN_RANGE) {
-                    creep.moveTo(target, {visualizePathStyle: {stroke: '#ffffff'}});
-                }
-            } else {
-                creep.memory.building = false;
-                creep.memory.repairing = true;
-            }
-        } else if (creep.memory.repairing) {
-            let toRepair = creep.room.getRepairTargets();
+        if (creep.is(gameData.constants.ACTION_REPAIRING)) {
+            let repairTargets = creep.room.getRepairTargets();
 
-            if (toRepair.length) {
-                toRepair = _.sortBy(toRepair, function (s) {
+            if (repairTargets.length) {
+                repairTargets = _.sortBy(repairTargets, function (s) {
                     let firstSort = s.structureType === STRUCTURE_RAMPART && s.hits < 1000
                         ? -10000
                         : s.structureType === STRUCTURE_CONTAINER
@@ -68,23 +57,21 @@ module.exports = {
                     return firstSort + creep.pos.getRangeTo(s);
                 });
 
-                target = toRepair[0];
-                if (creep.repair(target) === ERR_NOT_IN_RANGE) {
-                    creep.moveTo(target, {visualizePathStyle: {stroke: '#ffffff'}});
+                if (creep.repair(repairTargets[0]) === ERR_NOT_IN_RANGE) {
+                    creep.moveTo(repairTargets[0], {visualizePathStyle: {stroke: '#ffffff'}});
                 }
             } else {
-                creep.memory.repairing = false;
-                creep.memory.building = true;
+                creep.memory.action = gameData.constants.ACTION_LOADING;
+                creep.say(creep.memory.action);
             }
-        } else if (creep.memory.renewing) {
-            creep.moveTo(creep.spawn);
-            if (!creep.room.energyAvailable && creep.energy) {
-                creep.transfer(creep.spawn, RESOURCE_ENERGY);
-            }
-        } else {
-            let container = creep.pos.findClosestByRange(FIND_STRUCTURES, {filter: function(s) {
-                return s.structureType === STRUCTURE_CONTAINER && s.store.energy;
-            }});
+        }
+
+        if (creep.is(gameData.constants.ACTION_LOADING)) {
+            let container = creep.pos.findClosestByRange(FIND_STRUCTURES, {
+                filter: function (s) {
+                    return s.structureType === STRUCTURE_CONTAINER && s.store.energy;
+                }
+            });
 
             if (container) {
                 if (creep.withdraw(container, RESOURCE_ENERGY) === ERR_NOT_IN_RANGE) {
@@ -95,6 +82,11 @@ module.exports = {
                 if (creep.harvest(source) === ERR_NOT_IN_RANGE) {
                     creep.moveTo(source, {visualizePathStyle: {stroke: '#ffaa00'}});
                 }
+            }
+
+            if (!creep.carryCapacity) {
+                creep.memory.action = gameData.constants.ACTION_BUILDING;
+                creep.say(creep.memory.action);
             }
         }
     }
