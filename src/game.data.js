@@ -22,6 +22,7 @@ const renewThresholds = {
 
 const creepRoles = {
     'harvester': {
+        defaultAction: constants.ACTION_HARVESTING,
         optimalCount: function (room, posts) {
             return posts.length;
         },
@@ -32,6 +33,7 @@ const creepRoles = {
         }
     },
     'transporter': {
+        defaultAction: constants.ACTION_LOADING,
         optimalCount: function (room) {
             return room.sources.length + 1;
         },
@@ -44,6 +46,7 @@ const creepRoles = {
         }
     },
     'builder': {
+        defaultAction: constants.ACTION_LOADING,
         optimalCount: function (room) {
             return room.sources.length;
         },
@@ -56,6 +59,7 @@ const creepRoles = {
         }
     },
     'upgrader': {
+        defaultAction: constants.ACTION_LOADING,
         optimalCount: function (room, posts) {
             return posts.length;
         },
@@ -66,6 +70,7 @@ const creepRoles = {
         }
     },
     'scavenger': {
+        defaultAction: constants.ACTION_LOADING,
         optimalCount: function (room, posts) {
             return room.energyLevel >= 2 ? posts.length : 0;
         },
@@ -78,6 +83,7 @@ const creepRoles = {
         }
     },
     'sentry': {
+        defaultAction: constants.ACTION_DEFENDING,
         optimalCount: function (room, posts) {
             return room.energyLevel >= 2 ? posts.length : 0;
         },
@@ -87,14 +93,17 @@ const creepRoles = {
         }
     },
     'infantry': {
+        defaultAction: constants.ACTION_ATTACKING,
         bodies: {
             4: [TOUGH, TOUGH, ATTACK, ATTACK, ATTACK, ATTACK, ATTACK, ATTACK, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE]
         }
     },
     'claimer': {
+        defaultAction: constants.ACTION_WAITING,
         bodies: {0: [CLAIM, MOVE]}
     },
     'colonizer': {
+        defaultAction: constants.ACTION_WAITING,
         bodies: {
             3: [WORK, WORK, WORK, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE],
             4: [WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE]

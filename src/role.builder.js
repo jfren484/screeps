@@ -84,7 +84,7 @@ module.exports = {
                 }
             }
 
-            if (!creep.carryCapacity) {
+            if (!creep.availableCarryCapacity) {
                 creep.memory.action = gameData.constants.ACTION_BUILDING;
                 creep.say(creep.memory.action);
             }

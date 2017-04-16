@@ -16,7 +16,7 @@ module.exports = {
                         return true;
                     }
 
-                    return creep.ticksToLive > 750 && !target;
+                    return creep.ticksToLive < 750 && !target;
                 },
                 function (c) {
                     c.memory.action = gameData.constants.ACTION_LOADING;
