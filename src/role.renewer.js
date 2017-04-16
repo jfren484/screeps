@@ -31,7 +31,7 @@ module.exports = {
     run: function (creep) {
         if (!creep.pos.isNearTo(creep.spawn)) {
             creep.moveTo(creep.spawn);
-        } else if (creep.spawn.availableResourceCapacity && creep.energy) {
+        } else if (creep.spawn.availableResourceCapacity && creep.carry.energy) {
             creep.transfer(creep.spawn, RESOURCE_ENERGY);
         }
 

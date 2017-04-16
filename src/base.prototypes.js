@@ -37,7 +37,11 @@ Creep.prototype.getTarget = function () {
     return target;
 };
 
-Creep.prototype.is = function(...actions) {
+Creep.prototype.is = function (...actions) {
+    if (this.memory.role !== 'recycler' && !this.memory.action) {
+        this.memory.action = gameData.creepRoles[this.memory.role].defaultAction;
+    }
+
     return actions.indexOf(this.memory.action) >= 0;
 };
 
@@ -169,7 +173,7 @@ Room.prototype.stats = function () {
         .keys(gameData.creepRoles)
         .sort()
         .map(function (roleName) {
-            let creeps = _.filter(room.myCreeps, (c) => c.memory.role === roleName);
+            let creeps = _.filter(room.myCreeps, (c) => c.memory.role === roleName || c.memory.originalRole === roleName);
             let count = creeps.length;
             let names = creeps.map(function (c) {
                 return c.name;

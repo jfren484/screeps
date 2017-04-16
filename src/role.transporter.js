@@ -27,10 +27,10 @@ module.exports = {
         if (!creep.availableCarryCapacity && creep.is(gameData.constants.ACTION_LOADING)) {
             creep.memory.action = gameData.constants.ACTION_DISPENSING;
             creep.say(creep.memory.action);
-        } else if (!creep.carryLevel && creep.is(gameData.constants.ACTION_LOADING)) {
+        } else if (!creep.carryLevel && creep.is(gameData.constants.ACTION_DISPENSING)) {
             if (containersNeedingReduction.length || urgentNeeds.length) {
-                creep.memory.collecting = true;
-                creep.say('collect');
+                creep.memory.action = gameData.constants.ACTION_LOADING;
+                creep.say(creep.memory.action);
             } else {
                 creep.say('wait');
             }
