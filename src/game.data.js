@@ -9,7 +9,6 @@ const constants = {
     ACTION_REPAIRING: 'repair',
     ACTION_TRAVELING: 'travel',
     ACTION_UPGRADING: 'upgrade',
-    ACTION_WAITING: 'wait',
     RESULT_AT_POST: 'at post',
     RESULT_MOVED: 'moved'
 };
@@ -99,11 +98,11 @@ const creepRoles = {
         }
     },
     'claimer': {
-        defaultAction: constants.ACTION_WAITING,
+        defaultAction: constants.ACTION_CLAIMING,
         bodies: {0: [CLAIM, MOVE]}
     },
     'colonizer': {
-        defaultAction: constants.ACTION_WAITING,
+        defaultAction: '',
         bodies: {
             3: [WORK, WORK, WORK, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE],
             4: [WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE]

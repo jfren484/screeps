@@ -27,13 +27,9 @@ module.exports = {
         if (!creep.availableCarryCapacity && creep.is(gameData.constants.ACTION_LOADING)) {
             creep.memory.action = gameData.constants.ACTION_DISPENSING;
             creep.say(creep.memory.action);
-        } else if (!creep.carryLevel && creep.is(gameData.constants.ACTION_DISPENSING)) {
-            if (containersNeedingReduction.length || urgentNeeds.length) {
-                creep.memory.action = gameData.constants.ACTION_LOADING;
-                creep.say(creep.memory.action);
-            } else {
-                creep.say('wait');
-            }
+        } else if (!creep.carryLevel && !creep.is(gameData.constants.ACTION_LOADING)) {
+            creep.memory.action = gameData.constants.ACTION_LOADING;
+            creep.say(creep.memory.action);
         }
 
         if (creep.is(gameData.constants.ACTION_LOADING)) {
@@ -82,7 +78,7 @@ module.exports = {
                     creep.say(creep.memory.action);
                 }
             } else {
-                creep.memory.action = creep.carryLevel ? gameData.constants.ACTION_DISPENSING : gameData.constants.ACTION_WAITING;
+                creep.memory.action = gameData.constants.ACTION_DISPENSING;
                 creep.say(creep.memory.action);
             }
         }
