@@ -40,7 +40,7 @@ function spawnNewCreeps(spawn) {
         let topNeed = _.sortBy(creepsNeeded, ['creepsNeeded', 'index'])[0];
 
         // TODO: naming convention
-        spawn.createCreepWithRole(topNeed.role, undefined);
+        spawn.createCreepWithRole(topNeed.role);
     } else {
         // TODO: any need to be recycled?
     }

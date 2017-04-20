@@ -210,7 +210,7 @@ Room.prototype.stats = function () {
 
 /* Spawn */
 
-Spawn.prototype.createCreepWithRole = function (roleName, creepName) {
+Spawn.prototype.createCreepWithRole = function (roleName) {
     const creepRole = gameData.creepRoles[roleName];
 
     let level;
@@ -222,6 +222,11 @@ Spawn.prototype.createCreepWithRole = function (roleName, creepName) {
     if (!creepBody) {
         console.log(`Can't find body definition for ${roleName} in level ${this.room.energyLevel} room ${this.room.name}`);
         return undefined;
+    }
+
+    let creepName = creepRole.name + (++Memory.lastCreepId);
+    while (Game.creeps[creepName]) {
+        creepName = creepRole.name + (++Memory.lastCreepId);
     }
 
     let result = this.canCreateCreep(creepBody);

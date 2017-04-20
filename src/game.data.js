@@ -21,92 +21,101 @@ const renewThresholds = {
 
 const creepRoles = {
     'harvester': {
-        defaultAction: constants.ACTION_HARVESTING,
-        optimalCount: function (room, posts) {
-            return posts.length;
-        },
         bodies: {
             1: [WORK, WORK, CARRY, MOVE],
             2: [WORK, WORK, WORK, WORK, CARRY, MOVE, MOVE],
             3: [WORK, WORK, WORK, WORK, WORK, WORK, CARRY, MOVE, MOVE, MOVE]
+        },
+        defaultAction: constants.ACTION_HARVESTING,
+        name: 'Hrv',
+        optimalCount: function (room, posts) {
+            return posts.length;
         }
     },
     'transporter': {
-        defaultAction: constants.ACTION_LOADING,
-        optimalCount: function (room) {
-            return room.sources.length + 1;
-        },
         bodies: {
             1: [CARRY, CARRY, CARRY, MOVE, MOVE, MOVE],
             2: [CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE],
             3: [CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE],
             4: [CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY,
                 MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE]
+        },
+        defaultAction: constants.ACTION_LOADING,
+        name: 'Trn',
+        optimalCount: function (room) {
+            return room.sources.length + 1;
         }
     },
     'builder': {
-        defaultAction: constants.ACTION_LOADING,
-        optimalCount: function (room) {
-            return room.sources.length;
-        },
         bodies: {
             1: [WORK, CARRY, CARRY, MOVE, MOVE],
             2: [WORK, WORK, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE],
             3: [WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE],
             4: [WORK, WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE],
             5: [WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE]
+        },
+        defaultAction: constants.ACTION_LOADING,
+        name: 'Bld',
+        optimalCount: function (room) {
+            return room.sources.length;
         }
     },
     'upgrader': {
-        defaultAction: constants.ACTION_LOADING,
-        optimalCount: function (room, posts) {
-            return posts.length;
-        },
         bodies: {
             1: [WORK, WORK, CARRY, MOVE],
             2: [WORK, WORK, WORK, WORK, CARRY, MOVE],
             3: [WORK, WORK, WORK, WORK, WORK, CARRY, MOVE]
+        },
+        defaultAction: constants.ACTION_LOADING,
+        name: 'Upg',
+        optimalCount: function (room, posts) {
+            return posts.length;
         }
     },
     'scavenger': {
-        defaultAction: constants.ACTION_LOADING,
-        optimalCount: function (room, posts) {
-            return room.energyLevel >= 2 ? posts.length : 0;
-        },
         bodies: {
             2: [CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE],
             4: [CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE]
         },
+        defaultAction: constants.ACTION_LOADING,
         isRenewComplete: function (creep) {
             return creep.ticksToLive > renewThresholds.defaultRenew && creep.pos.findClosestByRange(FIND_DROPPED_RESOURCES);
+        },
+        name: 'Scv',
+        optimalCount: function (room, posts) {
+            return room.energyLevel >= 2 ? posts.length : 0;
         }
     },
     'sentry': {
-        defaultAction: constants.ACTION_DEFENDING,
-        optimalCount: function (room, posts) {
-            return room.energyLevel >= 2 ? posts.length : 0;
-        },
         bodies: {
             2: [RANGED_ATTACK, RANGED_ATTACK, RANGED_ATTACK, MOVE, MOVE],
             4: [RANGED_ATTACK, RANGED_ATTACK, RANGED_ATTACK, RANGED_ATTACK, RANGED_ATTACK, RANGED_ATTACK, MOVE, MOVE, MOVE]
-        }
+        },
+        defaultAction: constants.ACTION_DEFENDING,
+        name: 'Snt',
+        optimalCount: function (room, posts) {
+            return room.energyLevel >= 2 ? posts.length : 0;
+        },
     },
     'infantry': {
-        defaultAction: constants.ACTION_ATTACKING,
         bodies: {
             4: [TOUGH, TOUGH, ATTACK, ATTACK, ATTACK, ATTACK, ATTACK, ATTACK, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE]
-        }
+        },
+        defaultAction: constants.ACTION_ATTACKING,
+        name: 'Inf'
     },
     'claimer': {
+        bodies: {0: [CLAIM, MOVE]},
         defaultAction: constants.ACTION_CLAIMING,
-        bodies: {0: [CLAIM, MOVE]}
+        name: 'Clm'
     },
     'colonizer': {
-        defaultAction: '',
         bodies: {
             3: [WORK, WORK, WORK, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE],
             4: [WORK, WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE]
-        }
+        },
+        defaultAction: '',
+        name: 'Col'
     },
     'recycler': {},
     'renewer': {}
