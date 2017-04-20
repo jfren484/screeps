@@ -224,14 +224,14 @@ Spawn.prototype.createCreepWithRole = function (roleName) {
         return undefined;
     }
 
-    let creepName = creepRole.name + (++Memory.lastCreepId);
-    while (Game.creeps[creepName]) {
-        creepName = creepRole.name + (++Memory.lastCreepId);
-    }
-
     let result = this.canCreateCreep(creepBody);
     if (result === OK) {
-        let newName = this.createCreep(creepBody, creepName, {role: roleName, createdOn: new Date()});
+        let creepName = creepRole.name + (++Memory.lastCreepId);
+        while (Game.creeps[creepName]) {
+            creepName = creepRole.name + (++Memory.lastCreepId);
+        }
+
+        const newName = this.createCreep(creepBody, creepName, {role: roleName, createdOn: new Date()});
 
         console.log(`Spawning new ${roleName} in ${this.room.name}: ${newName}`);
 
