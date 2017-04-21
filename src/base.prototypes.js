@@ -50,9 +50,9 @@ Object.defineProperty(Creep.prototype, 'spawn', {
         if (this === Creep.prototype || this === undefined) return undefined;
 
         if (this._spawn === undefined) {
-            if (this.memory.spawnId === undefined) {
+            //if (this.memory.spawnId === undefined) {
                 this.memory.spawnId = (this.pos.findClosestByRange(FIND_MY_SPAWNS) || {id: null}).id;
-            }
+            //}
 
             this._spawn = Game.getObjectById(this.memory.spawnId);
         }
