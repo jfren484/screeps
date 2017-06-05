@@ -148,6 +148,15 @@ const rooms = {
             'infantry': [{x: 27, y: 12}, {x: 28, y: 12}, {x: 29, y: 12}, {x: 30, y: 12}, {x: 31, y: 12}],
             'upgrader': [{x: 11, y: 27}]
         }
+    },
+    'W85S61': {
+        posts: {
+            'harvester': [{x: 3, y: 20}, {x: 5, y: 20}],
+            'scavenger': [{x: 16, y: 19}],
+            'sentry': [],
+            'infantry': [],
+            'upgrader': [{x: 26, y: 7}]
+        }
     }
 };
 
