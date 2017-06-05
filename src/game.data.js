@@ -146,7 +146,7 @@ const rooms = {
             'scavenger': [{x: 23, y: 21}],
             'sentry': [{x: 23, y: 19}, {x: 29, y: 8}],
             'infantry': [{x: 27, y: 12}, {x: 28, y: 12}, {x: 29, y: 12}, {x: 30, y: 12}, {x: 31, y: 12}],
-            'upgrader': [{x: 11, y: 27}, {x: 13, y: 27}, {x: 12, y: 27}]
+            'upgrader': [{x: 11, y: 27}]
         }
     }
 };
