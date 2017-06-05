@@ -18,10 +18,12 @@ module.exports = {
         for (let name in Game.creeps) {
             let creep = Game.creeps[name];
 
-            if (roleModules[creep.memory.role]) {
-                roleModules[creep.memory.role].run(creep);
-            } else if (creep.memory.role) {
-                console.log('Unknown role: ' + creep.memory.role);
+            if (!creep.spawning && creep.memory.role) {
+                if (roleModules[creep.memory.role]) {
+                    roleModules[creep.memory.role].run(creep);
+                } else {
+                    console.log('Unknown role: ' + creep.memory.role);
+                }
             }
         }
     }

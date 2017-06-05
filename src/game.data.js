@@ -117,10 +117,9 @@ const creepRoles = {
         defaultAction: '',
         name: 'Col'
     },
-    'manual': {},
     'recycler': {},
-    'renewer': {}//,
-    //'traveller': {}
+    'renewer': {},
+    'traveller': {}
 };
 
 const rooms = {

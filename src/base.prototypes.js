@@ -50,9 +50,7 @@ Object.defineProperty(Creep.prototype, 'spawn', {
         if (this === Creep.prototype || this === undefined) return undefined;
 
         if (this._spawn === undefined) {
-            //if (this.memory.spawnId === undefined) {
-                this.memory.spawnId = (this.pos.findClosestByRange(FIND_MY_SPAWNS) || {id: null}).id;
-            //}
+            this.memory.spawnId = (this.pos.findClosestByRange(FIND_MY_SPAWNS) || {id: null}).id;
 
             this._spawn = Game.getObjectById(this.memory.spawnId);
         }
@@ -87,6 +85,19 @@ Creep.prototype.takeUnoccupiedPost = function () {
     }
 
     return ERR_NO_PATH;
+};
+
+Creep.prototype.travelTo = function (x, y, roomName) {
+    const creep = this;
+
+    creep.memory.destinationX = x;
+    creep.memory.destinationY = y;
+    creep.memory.destinationRoom = roomName;
+
+    creep.memory.futureRole = creep.memory.role;
+    creep.memory.role = 'traveller';
+
+    return OK;
 };
 
 /* Room */

@@ -35,7 +35,7 @@ module.exports = {
 
         const renewing = creep.memory.action === 'renew';
 
-        if (!renewing && !creep.spawning && creep.ticksToLive < 100) {
+        if (!renewing && creep.ticksToLive < 100) {
             if (creep.spawn) {
                 creep.memory.action = 'renew';
                 creep.say(creep.memory.action);

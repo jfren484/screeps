@@ -20,7 +20,7 @@ module.exports = {
     renew: renew,
     renewCheck: function (creep, customShouldRenew, renewCustomAction) {
         let shouldRenew = customShouldRenew || defaultShouldRenew;
-        if (creep.spawning || !creep.spawn || !shouldRenew(creep)) {
+        if (!creep.spawn || !shouldRenew(creep)) {
             return false;
         }
 
