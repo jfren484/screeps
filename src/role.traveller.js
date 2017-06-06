@@ -10,9 +10,9 @@ module.exports = {
             delete creep.memory.destinationY;
             delete creep.memory.destinationRoom;
 
+            creep.memory.role = creep.memory.futureRole;
             creep.memory.action = gameData.creepRoles[creep.memory.role].defaultAction;
             creep.say(creep.memory.action);
-            creep.memory.role = creep.memory.futureRole;
             delete creep.memory.futureRole;
         } else {
             creep.moveTo(destPos);
