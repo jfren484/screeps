@@ -78,7 +78,7 @@ Creep.prototype.takeUnoccupiedPost = function () {
         let post = postPosArray[i];
 
         let creepInPost = creep.room.lookForAt(LOOK_CREEPS, post.x, post.y);
-        if (!creepInPost.length || creepInPost[0].memory.role !== creep.memory.role) {
+        if (!creepInPost.length || (creepInPost[0].memory && creepInPost[0].memory.role !== creep.memory.role)) {
             creep.moveTo(post.x, post.y, {visualizePathStyle: {stroke: '#5D80B2'}});
             return gameData.constants.RESULT_MOVED;
         }
@@ -94,8 +94,10 @@ Creep.prototype.travelTo = function (x, y, roomName) {
     creep.memory.destinationY = y;
     creep.memory.destinationRoom = roomName;
 
-    creep.memory.futureRole = creep.memory.role;
-    creep.memory.role = 'traveller';
+    if (creep.memory.role !== 'traveller') {
+        creep.memory.futureRole = creep.memory.role;
+        creep.memory.role = 'traveller';
+    }
 
     return OK;
 };
