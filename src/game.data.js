@@ -55,7 +55,7 @@ const creepRoles = {
                 CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY, CARRY,
                 MOVE,  MOVE,  MOVE,  MOVE,  MOVE,  MOVE,  MOVE,  MOVE,  MOVE,  MOVE,  MOVE,  MOVE,  MOVE,  MOVE,  MOVE]
         },
-        defaultAction: '',
+        defaultAction: constants.ACTION_LOADING,
         name: 'Tnk'
     },
     'builder': {
