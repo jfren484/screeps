@@ -23,6 +23,20 @@ Object.defineProperty(Creep.prototype, 'carryLevel', {
     configurable: true
 });
 
+Object.defineProperty(Creep.prototype, 'destinationPos', {
+    get: function () {
+        if (this === Creep.prototype || this === undefined) return undefined;
+
+        if (this._destinationPos === undefined && this.memory.destinationX && this.memory.destinationY && this.memory.destinationRoom) {
+            this._destinationPos = new RoomPosition(this.memory.destinationX, this.memory.destinationY, this.memory.destinationRoom);
+        }
+
+        return this._destinationPos;
+    },
+    enumerable: true,
+    configurable: true
+});
+
 Creep.prototype.getTarget = function () {
     let target = null;
 
@@ -44,6 +58,20 @@ Creep.prototype.is = function (...actions) {
 
     return actions.indexOf(this.memory.action) >= 0;
 };
+
+Object.defineProperty(Creep.prototype, 'source', {
+    get: function () {
+        if (this === Creep.prototype || this === undefined) return undefined;
+
+        if (this._source === undefined && this.memory.sourceId) {
+            this._source = Game.getObjectById(this.memory.sourceId);
+        }
+
+        return this._source;
+    },
+    enumerable: true,
+    configurable: true
+});
 
 Object.defineProperty(Creep.prototype, 'spawn', {
     get: function () {
@@ -87,6 +115,43 @@ Creep.prototype.takeUnoccupiedPost = function () {
     return ERR_NO_PATH;
 };
 
+/**
+ * Tell the creep to begin tanking from source to the specified room. The x and y coordinates are just
+ * there to be able to create a destination RoomPosition object.
+ *
+ * @type {function}
+ *
+ * @param {string} sourceId The object id of the source (container or storage).
+ * @param {int} destinationX The x coordinate of the destination.
+ * @param {int} destinationY The y coordinate of the destination.
+ * @param {string} destinationRoomName The name of the destination room.
+ *
+ * @return {number|OK}
+ */
+Creep.prototype.tankRoute = function (sourceId, destinationX, destinationY, destinationRoomName) {
+    const creep = this;
+
+    creep.memory.sourceId = sourceId;
+    creep.memory.destinationX = destinationX;
+    creep.memory.destinationY = destinationY;
+    creep.memory.destinationRoom = destinationRoomName;
+
+    creep.memory.action = gameData.constants.ACTION_LOADING;
+
+    return OK;
+};
+
+/**
+ * Tell the creep to travel to the specified room, x, and y.
+ *
+ * @type {function}
+ *
+ * @param {int} x The x coordinate of the destination.
+ * @param {int} y The y coordinate of the destination.
+ * @param {string} roomName The name of the destination room.
+ *
+ * @return {number|OK}
+ */
 Creep.prototype.travelTo = function (x, y, roomName) {
     const creep = this;
 
