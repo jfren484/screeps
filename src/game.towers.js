@@ -5,6 +5,10 @@ module.exports = {
 
             for (let towerIndex in towers) {
                 let tower = towers[towerIndex];
+
+                // Not sure why, but as of 8/14, sometimes tower doesn't contain a pos ?!
+                if (!tower.pos) continue;
+
                 // TODO: prioritize creeps that still have attack or heal parts
                 let target = tower.pos.findClosestByRange(FIND_HOSTILE_CREEPS);
                 
